@@ -1,0 +1,199 @@
+/* Calendar Specific Styles */
+.calendar-container {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
+}
+
+.calendar-nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.calendar-nav-btn {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.calendar-nav-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+}
+
+.calendar-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin: 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-weekday {
+    text-align: center;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem;
+    background: rgba(248, 249, 250, 0.5);
+}
+
+.calendar-day:hover {
+    background: linear-gradient(135deg, var(--primary), var(--accent1));
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+}
+
+.calendar-day.today {
+    background: linear-gradient(135deg, var(--primary), var(--accent1));
+    color: white;
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    font-weight: 700;
+}
+
+.calendar-day.other-month {
+    color: var(--text-light);
+    background: rgba(248, 249, 250, 0.3);
+}
+
+.calendar-day.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--warning);
+    border-radius: 50%;
+}
+
+.calendar-day.has-event.today::after {
+    background: white;
+}
+
+.calendar-events {
+    margin-top: 1.5rem;
+}
+
+.calendar-event-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba(248, 249, 250, 0.7);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.calendar-event-item:hover {
+    background: white;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.event-time {
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 100px;
+}
+
+.event-details h6 {
+    margin-bottom: 0.2rem;
+    color: var(--dark);
+}
+
+.event-details p {
+    margin-bottom: 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.event-badge {
+    margin-left: auto;
+}
+
+/* Mini Calendar */
+.mini-calendar {
+    background: white;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: var(--card-shadow);
+}
+
+.mini-calendar-header {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.mini-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.mini-calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mini-calendar-day:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.mini-calendar-day.today {
+    background: linear-gradient(135deg, var(--primary), var(--accent1));
+    color: white;
+    font-weight: 700;
+}

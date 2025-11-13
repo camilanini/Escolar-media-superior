@@ -1,0 +1,255 @@
+/* Grades Specific Styles */
+.grades-header {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.grade-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.grade-stat {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+}
+
+.grade-stat:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.grade-stat.primary {
+    border-top: 4px solid var(--primary);
+}
+
+.grade-stat.success {
+    border-top: 4px solid var(--success);
+}
+
+.grade-stat.warning {
+    border-top: 4px solid var(--warning);
+}
+
+.grade-stat.info {
+    border-top: 4px solid var(--info);
+}
+
+.grade-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.grade-label {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.grade-progress {
+    margin-top: 1rem;
+}
+
+.subject-grades {
+    margin-top: 2rem;
+}
+
+.grade-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+}
+
+.grade-item:hover {
+    transform: translateX(5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.grade-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.grade-icon.math {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.grade-icon.history {
+    background: linear-gradient(135deg, var(--warning), #e01e5a);
+}
+
+.grade-icon.programming {
+    background: linear-gradient(135deg, var(--success), #00b4d8);
+}
+
+.grade-icon.english {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+}
+
+.grade-details {
+    flex: 1;
+}
+
+.grade-details h5 {
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.grade-details p {
+    margin-bottom: 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.grade-score {
+    text-align: right;
+}
+
+.grade-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.grade-letter {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.grade-trend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.trend-up {
+    color: var(--success);
+}
+
+.trend-down {
+    color: var(--warning);
+}
+
+.trend-stable {
+    color: var(--text-light);
+}
+
+/* Grade Distribution */
+.grade-distribution {
+    margin-top: 2rem;
+}
+
+.distribution-bar {
+    display: flex;
+    height: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 1rem 0;
+    box-shadow: var(--card-shadow);
+}
+
+.distribution-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.distribution-segment:hover {
+    transform: scale(1.05);
+}
+
+.distribution-segment.excellent {
+    background: linear-gradient(135deg, var(--success), #00b4d8);
+}
+
+.distribution-segment.good {
+    background: linear-gradient(135deg, var(--info), #3a86ff);
+}
+
+.distribution-segment.average {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.distribution-segment.poor {
+    background: linear-gradient(135deg, var(--warning), #e01e5a);
+}
+
+/* Performance Chart */
+.performance-chart {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    margin-top: 2rem;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+.legend-color.math {
+    background: var(--primary);
+}
+
+.legend-color.history {
+    background: var(--warning);
+}
+
+.legend-color.programming {
+    background: var(--success);
+}
+
+.legend-color.english {
+    background: var(--accent1);
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Registro</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<h1>Editar Registro</h1>
+
+<div class="container">
+
+    <form method="POST">
+        <label>Materia:</label>
+        <input type="text" name="materia" value="{{ dato.materia }}">
+
+        <label>Descripción:</label>
+        <input type="text" name="descripcion" value="{{ dato.descripcion }}">
+
+        <label>Fecha:</label>
+        <input type="text" name="fecha" value="{{ dato.fecha }}">
+
+        <label>Estatus:</label>
+        <input type="text" name="estatus" value="{{ dato.estatus }}">
+
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <a class="back-link" href="{{ url_for('index') }}">← Volver</a>
+
+</div>
+
+</body>
+</html>

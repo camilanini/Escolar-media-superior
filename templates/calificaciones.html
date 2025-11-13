@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<div class="encabezado-seccion">
+    <h2>Calificaciones</h2>
+    <span class="badge-estado">Promedio General: 8.7</span>
+</div>
+
+<div class="contenido-principal">
+    <div class="flex-entre mb-4">
+        <h3><i class="fas fa-chart-bar"></i> Mis Calificaciones</h3>
+        <div class="flex-centro gap-3">
+            <span class="badge badge-primario">Semestre 5</span>
+            <span class="badge badge-secundario">Grupo B</span>
+        </div>
+    </div>
+
+    <!-- Resumen de Calificaciones -->
+    <div class="grid-contenido mb-4">
+        <div class="tarjeta texto-centro">
+            <h4>Promedio General</h4>
+            <div class="puntuacion-grande">8.7</div>
+            <p>De 10.0 puntos</p>
+        </div>
+        
+        <div class="tarjeta texto-centro">
+            <h4>Materias Aprobadas</h4>
+            <div class="puntuacion-grande texto-exito">6</div>
+            <p>De 7 materias</p>
+        </div>
+        
+        <div class="tarjeta texto-centro">
+            <h4>Posición en Grupo</h4>
+            <div class="puntuacion-grande">12°</div>
+            <p>De 35 estudiantes</p>
+        </div>
+    </div>
+
+    <!-- Tabla de Calificaciones por Materia -->
+    <div class="tarjeta">
+        <h4 class="mb-3"><i class="fas fa-book"></i> Calificaciones por Materia</h4>
+        
+        <div class="tabla-contenedor">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Profesor</th>
+                        <th>1er Parcial</th>
+                        <th>2do Parcial</th>
+                        <th>3er Parcial</th>
+                        <th>Promedio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Programación</strong>
+                            <br>
+                            <small class="texto-claro">J14</small>
+                        </td>
+                        <td>Prof. Martínez</td>
+                        <td class="texto-exito">9.2</td>
+                        <td class="texto-exito">8.8</td>
+                        <td class="texto-advertencia">8.0</td>
+                        <td>
+                            <strong class="texto-exito">8.7</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-exito">Aprobado</span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <strong>Matemáticas</strong>
+                            <br>
+                            <small class="texto-claro">V01</small>
+                        </td>
+                        <td>Prof. García</td>
+                        <td class="texto-exito">9.5</td>
+                        <td class="texto-exito">9.0</td>
+                        <td class="texto-exito">9.2</td>
+                        <td>
+                            <strong class="texto-exito">9.2</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-exito">Aprobado</span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <strong>Historia</strong>
+                            <br>
+                            <small class="texto-claro">M04</small>
+                        </td>
+                        <td>Prof. López</td>
+                        <td class="texto-advertencia">7.5</td>
+                        <td class="texto-advertencia">7.8</td>
+                        <td class="texto-advertencia">7.0</td>
+                        <td>
+                            <strong class="texto-advertencia">7.4</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-advertencia">Mínimo</span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <strong>Inglés</strong>
+                            <br>
+                            <small class="texto-claro">L05</small>
+                        </td>
+                        <td>Prof. Smith</td>
+                        <td class="texto-exito">8.5</td>
+                        <td class="texto-exito">8.0</td>
+                        <td class="texto-exito">8.8</td>
+                        <td>
+                            <strong class="texto-exito">8.4</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-exito">Aprobado</span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <strong>Física</strong>
+                            <br>
+                            <small class="texto-claro">M02</small>
+                        </td>
+                        <td>Prof. Rodríguez</td>
+                        <td class="texto-advertencia">6.8</td>
+                        <td class="texto-peligro">5.5</td>
+                        <td class="texto-advertencia">7.2</td>
+                        <td>
+                            <strong class="texto-advertencia">6.5</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-peligro">Extraordinario</span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <strong>Química</strong>
+                            <br>
+                            <small class="texto-claro">J08</small>
+                        </td>
+                        <td>Prof. Hernández</td>
+                        <td class="texto-exito">8.0</td>
+                        <td class="texto-exito">8.5</td>
+                        <td class="texto-exito">8.2</td>
+                        <td>
+                            <strong class="texto-exito">8.2</strong>
+                        </td>
+                        <td>
+                            <span class="badge badge-exito">Aprobado</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Gráficas de Progreso -->
+    <div class="grid-contenido mt-4">
+        <div class="tarjeta">
+            <h4 class="mb-3"><i class="fas fa-chart-line"></i> Progreso por Materia</h4>
+            
+            <div class="progreso-materia">
+                <div class="flex-entre mb-2">
+                    <span>Programación</span>
+                    <strong class="texto-exito">8.7</strong>
+                </div>
+                <div class="barra-progreso">
+                    <div class="progreso" style="width: 87%"></div>
+                </div>
+            </div>
+            
+            <div class="progreso-materia">
+                <div class="flex-entre mb-2">
+                    <span>Matemáticas</span>
+                    <strong class="texto-exito">9.2</strong>
+                </div>
+                <div class="barra-progreso">
+                    <div class="progreso" style="width: 92%"></div>
+                </div>
+            </div>
+            
+            <div class="progreso-materia">
+                <div class="flex-entre mb-2">
+                    <span>Historia</span>
+                    <strong class="texto-advertencia">7.4</strong>
+                </div>
+                <div class="barra-progreso">
+                    <div class="progreso" style="width: 74%"></div>
+                </div>
+            </div>
+            
+            <div class="progreso-materia">
+                <div class="flex-entre mb-2">
+                    <span>Inglés</span>
+                    <strong class="texto-exito">8.4</strong>
+                </div>
+                <div class="barra-progreso">
+                    <div class="progreso" style="width: 84%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <h4 class="mb-3"><i class="fas fa-trophy"></i> Reconocimientos</h4>
+            
+            <div class="reconocimiento-item">
+                <div class="flex-centro gap-3 mb-3">
+                    <div class="icono-reconocimiento">
+                        <i class="fas fa-medal texto-exito"></i>
+                    </div>
+                    <div>
+                        <strong>Excelencia en Matemáticas</strong>
+                        <br>
+                        <small class="texto-claro">Mejor promedio del grupo</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reconocimiento-item">
+                <div class="flex-centro gap-3 mb-3">
+                    <div class="icono-reconocimiento">
+                        <i class="fas fa-star texto-advertencia"></i>
+                    </div>
+                    <div>
+                        <strong>Progreso en Programación</strong>
+                        <br>
+                        <small class="texto-claro">Mejoría del 15% este semestre</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reconocimiento-item">
+                <div class="flex-centro gap-3">
+                    <div class="icono-reconocimiento">
+                        <i class="fas fa-award texto-primario"></i>
+                    </div>
+                    <div>
+                        <strong>Asistencia Perfecta</strong>
+                        <br>
+                        <small class="texto-claro">100% de asistencia en inglés</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información Adicional -->
+    <div class="tarjeta mt-4">
+        <h4 class="mb-3"><i class="fas fa-info-circle"></i> Información Importante</h4>
+        
+        <div class="grid-contenido">
+            <div class="info-adicional">
+                <h5>Escala de Calificaciones</h5>
+                <ul class="lista-info">
+                    <li><span class="texto-exito">9.0 - 10.0:</span> Excelente</li>
+                    <li><span class="texto-exito">8.0 - 8.9:</span> Muy Bueno</li>
+                    <li><span class="texto-advertencia">7.0 - 7.9:</span> Bueno</li>
+                    <li><span class="texto-peligro">6.0 - 6.9:</span> Suficiente</li>
+                    <li><span class="texto-peligro">0 - 5.9:</span> No Acreditado</li>
+                </ul>
+            </div>
+            
+            <div class="info-adicional">
+                <h5>Próximas Evaluaciones</h5>
+                <ul class="lista-info">
+                    <li><strong>Matemáticas:</strong> Examen 15/Nov</li>
+                    <li><strong>Programación:</strong> Proyecto Final 20/Nov</li>
+                    <li><strong>Inglés:</strong> Speaking Test 18/Nov</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.puntuacion-grande {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.texto-exito {
+    color: var(--color-exito);
+}
+
+.texto-advertencia {
+    color: var(--color-advertencia);
+}
+
+.texto-peligro {
+    color: var(--color-peligro);
+}
+
+.texto-primario {
+    color: var(--color-primario);
+}
+
+.texto-claro {
+    color: var(--color-texto-claro);
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+.progreso-materia {
+    margin-bottom: 20px;
+}
+
+.icono-reconocimiento {
+    width: 40px;
+    height: 40px;
+    background: var(--color-claro);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.reconocimiento-item {
+    padding: 15px;
+    border-bottom: 1px solid var(--color-claro);
+}
+
+.reconocimiento-item:last-child {
+    border-bottom: none;
+}
+
+.lista-info {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-info li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--color-claro);
+}
+
+.lista-info li:last-child {
+    border-bottom: none;
+}
+
+.info-adicional {
+    padding: 15px;
+}
+
+.gap-3 {
+    gap: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .puntuacion-grande {
+        font-size: 2rem;
+    }
+    
+    .tabla {
+        font-size: 0.9rem;
+    }
+    
+    .encabezado-seccion {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

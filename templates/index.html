@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Columna principal -->
+    <div class="col-md-8">
+        <!-- Tarjeta de bienvenida -->
+        <div class="card welcome-card mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="card-title">¡Hola, {{ estudiante.nombre.split(' ')[0] }}!</h2>
+                        <p class="card-text">Bienvenido a tu portal estudiantil. Aquí puedes gestionar tus materias, tareas y actividades.</p>
+                        <a href="{{ url_for('perfil') }}" class="btn btn-light mt-2">Ver mi perfil completo</a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-user-graduate" style="font-size: 80px; opacity: 0.8;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Próximas tareas y eventos -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-tasks me-2"></i>Próximas Tareas y Eventos
+            </div>
+            <div class="card-body">
+                {% for tarea in tareas[:4] %}
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                    <div>
+                        <h6 class="mb-0">{{ tarea.materia }}</h6>
+                        <small class="text-muted">{{ tarea.descripcion }}</small>
+                    </div>
+                    <span class="badge bg-primary">{{ tarea.fecha }}</span>
+                </div>
+                {% endfor %}
+                <a href="{{ url_for('agenda') }}" class="btn btn-outline-primary btn-sm mt-2">Ver todas las tareas</a>
+            </div>
+        </div>
+
+        <!-- Materias -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-book me-2"></i>Mis Materias
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for materia in materias %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card subject-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ materia.nombre }}</h5>
+                                <p class="card-text">Grupo: {{ materia.grupo }}</p>
+                                <p class="card-text"><small class="text-muted">Profesor: {{ materia.profesor }}</small></p>
+                                <a href="{{ url_for('materias_route') }}" class="btn btn-sm btn-outline-primary">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <!-- Anuncios -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <i class="fas fa-bullhorn me-2"></i>Anuncios Recientes
+            </div>
+            <div class="card-body">
+                {% for anuncio in anuncios[:3] %}
+                <div class="border-bottom pb-2 mb-2">
+                    <h6 class="mb-1">{{ anuncio.titulo }}</h6>
+                    <small class="text-muted">{{ anuncio.fecha }}</small>
+                </div>
+                {% endfor %}
+                <a href="{{ url_for('anuncios_route') }}" class="btn btn-outline-warning btn-sm mt-2">Ver todos los anuncios</a>
+            </div>
+        </div>
+
+        <!-- Horario de Tutoría -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-chalkboard-teacher me-2"></i>Horario de Tutoría
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Grupo:</strong> 5A | Mercedes</p>
+                <p class="mb-1"><strong>Horario:</strong> 1:00 PM</p>
+                <p class="mb-0"><strong>Día:</strong> Viernes</p>
+                <a href="{{ url_for('tutoria') }}" class="btn btn-outline-info btn-sm mt-3">Más información</a>
+            </div>
+        </div>
+
+        <!-- Actividades Extracurriculares -->
+        <div class="card">
+            <div class="card-header bg-purple text-white" style="background-color: var(--accent2);">
+                <i class="fas fa-running me-2"></i>Actividades Extracurriculares
+            </div>
+            <div class="card-body">
+                {% for actividad in actividades %}
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                    <div>
+                        <h6 class="mb-0">{{ actividad.nombre }}</h6>
+                        <small class="text-muted">{{ actividad.horario }}</small>
+                    </div>
+                    <span class="badge bg-success">Activo</span>
+                </div>
+                {% endfor %}
+                <a href="{{ url_for('actividades_route') }}" class="btn btn-outline-purple btn-sm mt-2" style="border-color: var(--accent2); color: var(--accent2);">Ver todas</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

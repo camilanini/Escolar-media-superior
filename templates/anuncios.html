@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <i class="fas fa-bullhorn me-2"></i>Anuncios
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Todos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">General</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Recientes</a>
+                    </li>
+                </ul>
+                
+                {% for anuncio in anuncios %}
+                <div class="card announcement-card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title">{{ anuncio.titulo }}</h5>
+                            <span class="badge bg-warning">{{ anuncio.tipo }}</span>
+                        </div>
+                        <p class="card-text">Control escolar</p>
+                        <p class="card-text"><small class="text-muted">{{ anuncio.fecha }}</small></p>
+                        <a href="#" class="btn btn-sm btn-outline-warning">Ver más</a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="text-center mt-4">
+                    <a href="#" class="btn btn-outline-warning">Cargar más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-chalkboard-teacher me-2"></i>Tutoría
+            </div>
+            <div class="card-body">
+                <h6>Historial de Sesiones</h6>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">Viernes - Proyecto</li>
+                    <li class="list-group-item">Viernes - Tutoría</li>
+                    <li class="list-group-item">Viernes - Proyecto</li>
+                </ul>
+                
+                <h6>Horarios</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Viernes
+                        <span class="badge bg-primary rounded-pill">1:00 PM</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Miércoles
+                        <span class="badge bg-primary rounded-pill">1:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

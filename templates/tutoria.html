@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-chalkboard-teacher me-2"></i>Información de Tutoría
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Detalles del Tutor</h5>
+                        <p><strong>Nombre:</strong> Mercedes López</p>
+                        <p><strong>Grupo:</strong> 5A</p>
+                        <p><strong>Correo:</strong> mercedes.lopez@escuela.edu</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Horario de Tutoría</h5>
+                        <p><strong>Día:</strong> Viernes</p>
+                        <p><strong>Hora:</strong> 1:00 PM</p>
+                        <p><strong>Ubicación:</strong> Aula 5A</p>
+                    </div>
+                </div>
+                
+                <h5>Próximas Sesiones</h5>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tema</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>06/oct/2025</td>
+                                <td>Proyecto Final</td>
+                                <td><span class="badge bg-warning">Próxima</span></td>
+                                <td><a href="#" class="btn btn-sm btn-outline-primary">Preparar</a></td>
+                            </tr>
+                            <tr>
+                                <td>29/sep/2025</td>
+                                <td>Orientación Vocacional</td>
+                                <td><span class="badge bg-success">Completada</span></td>
+                                <td><a href="#" class="btn btn-sm btn-outline-info">Ver resumen</a></td>
+                            </tr>
+                            <tr>
+                                <td>22/sep/2025</td>
+                                <td>Plan de Estudios</td>
+                                <td><span class="badge bg-success">Completada</span></td>
+                                <td><a href="#" class="btn btn-sm btn-outline-info">Ver resumen</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-calendar-check me-2"></i>Agendar Cita
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fecha">
+                    </div>
+                    <div class="mb-3">
+                        <label for="hora" class="form-label">Hora</label>
+                        <select class="form-select" id="hora">
+                            <option selected>Selecciona una hora</option>
+                            <option value="1">1

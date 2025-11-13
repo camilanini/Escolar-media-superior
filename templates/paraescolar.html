@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Paraescolar</h2>
+
+<div class="main-content">
+    <h4 class="mb-3">Actividades Paraescolares</h4>
+    
+    <div class="row">
+        {% for activity in activities %}
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ activity.name }}</h5>
+                    <p class="card-text">{{ activity.schedule }}</p>
+                    <button class="btn btn-outline-primary btn-sm">Inscribirse</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center mt-4">
+        <h5>Más actividades próximamente...</h5>
+    </div>
+</div>
+{% endblock %}

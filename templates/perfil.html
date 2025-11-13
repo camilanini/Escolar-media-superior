@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <img src="https://ui-avatars.com/api/?name={{ estudiante.nombre }}&size=120&background=4361ee&color=fff" 
+                     class="profile-img mb-3" alt="Foto de perfil">
+                <h4>{{ estudiante.nombre }}</h4>
+                <p class="text-muted">{{ estudiante.semestre }}</p>
+                <div class="d-grid gap-2">
+                    <a href="#" class="btn btn-primary"><i class="fas fa-edit me-2"></i>Editar Perfil</a>
+                    <a href="{{ url_for('agenda') }}" class="btn btn-outline-primary"><i class="fas fa-calendar me-2"></i>Mi Agenda</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-info-circle me-2"></i>Información Personal
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Nombre completo:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ estudiante.nombre }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Número de control:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ estudiante.numero_control }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-graduation-cap me-2"></i>Información Académica
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Especialidad:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ estudiante.especialidad }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Semestre:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ estudiante.grupo }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <strong>Turno:</strong>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ estudiante.turno }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
