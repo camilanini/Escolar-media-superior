@@ -106,5 +106,5 @@ def actividades_route():
 def calificaciones():
     return render_template("calificaciones.html", estudiante=estudiante, materias=materias)
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     app.run(debug=True)
