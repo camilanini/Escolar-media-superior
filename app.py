@@ -5,8 +5,8 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET", "dev-secret")
-MONGO_URI = "mongodb+srv://paolaco1308_db_user:admin321@mediasuperior.ephlbzn.mongodb.net/mediasuperior"
+app.secret_key = os.environ.get("FLASK_SECRET", "dev-secret-key-2025")
+MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://paolaco1308_db_user:admin321@mediasuperior.ephlbzn.mongodb.net/mediasuperior")
 
 try:
     client = MongoClient(
@@ -32,79 +32,105 @@ except Exception as e:
         db = None
         print("No se pudo conectar con MongoDB Atlas:", e)
 
-estudiante = {
-    "nombre": "Paola Camila Corona Guzmán",
-    "semestre": "Quinto Semestre",
+ALUMNO_DATA = {
+    "nombre_completo": "Mark Corona",
+    "curp": "CORM950515HDFRNL09",
+    "numero_control": "2025001",
     "especialidad": "Programación",
-    "turno": "Matutino",
-    "grupo": "5B",
-    "numero_control": "12345678"
+    "semestre": "5",
+    "grupo": "B",
+    "turno": "Matutino"
 }
 
-materias = [
-    {"nombre": "Matemáticas V", "grupo": "07", "profesor": "Luis García"},
-    {"nombre": "Historia", "grupo": "M04", "profesor": "Ana Martínez"},
-    {"nombre": "Programación", "grupo": "J14", "profesor": "Carlos Rodríguez"},
-    {"nombre": "Inglés", "grupo": "A10", "profesor": "María López"}
+ANUNCIOS_RECIENTES = [
+    {
+        "titulo": "Convocatoria Becas 2025",
+        "emisor": "Control Escolar",
+        "fecha": "07/OCT/2025",
+        "prioridad": "alta"
+    },
+    {
+        "titulo": "Suspensión de Clases",
+        "emisor": "Control Escolar",
+        "fecha": "06/OCT/2025",
+        "prioridad": "media"
+    },
+    {
+        "titulo": "Cambio Horarios",
+        "emisor": "Dirección",
+        "fecha": "04/OCT/2025",
+        "prioridad": "baja"
+    }
 ]
 
-tareas = [
-    {"materia": "Matemáticas V", "descripcion": "Ejercicios de álgebra", "fecha": "2025-10-10"},
-    {"materia": "Historia", "descripcion": "Investigación sobre la Revolución", "fecha": "2025-10-12"},
-    {"materia": "Programación", "descripcion": "Proyecto final", "fecha": "2025-10-15"},
-    {"materia": "Inglés", "descripcion": "Presentación oral", "fecha": "2025-10-08"}
-]
+HORARIOS_TUTORIA = {
+    "5A": "1:00 PM",
+    "5B": "1:00 PM",
+    "Miercoles": "1:00 PM",
+    "Viernes": "1:00 PM"
+}
 
-anuncios = [
-    {"titulo": "Entrega de Calificaciones", "fecha": "06/oct/2025", "tipo": "General"},
-    {"titulo": "Convocatoria Becas 2025", "fecha": "07/oct/2025", "tipo": "General"},
-    {"titulo": "Suspensión de Clases", "fecha": "06/oct/2025", "tipo": "General"},
-    {"titulo": "Cambio Horarios", "fecha": "04/oct/2025", "tipo": "General"}
-]
-
-actividades = [
-    {"nombre": "Voleibol", "horario": "Lunes y Miércoles 4:00 PM"},
-    {"nombre": "Fútbol", "horario": "Martes y Jueves 4:00 PM"},
-    {"nombre": "Basketball", "horario": "Viernes 3:00 PM"},
-    {"nombre": "Pintura", "horario": "Sábados 10:00 AM"}
+MATERIAS = [
+    {"nombre": "Programación", "horario": "J14", "profesor": "Lic. García"},
+    {"nombre": "Matemáticas", "horario": "L25", "profesor": "Mtro. López"},
+    {"nombre": "Historia", "horario": "M04", "profesor": "Prof. Martínez"},
+    {"nombre": "Inglés", "horario": "V03", "profesor": "Mrs. Smith"}
 ]
 
 @app.route("/")
 def index():
+    """Página principal con resumen del estudiante"""
     return render_template("index.html", 
-                          estudiante=estudiante, 
-                          materias=materias, 
-                          tareas=tareas, 
-                          anuncios=anuncios,
-                          actividades=actividades)
+                         alumno=ALUMNO_DATA,
+                         anuncios=ANUNCIOS_RECIENTES[:2],  
+                         horarios_tutoria=HORARIOS_TUTORIA)
 
 @app.route("/perfil")
 def perfil():
-    return render_template("perfil.html", estudiante=estudiante)
+    """Página de perfil del estudiante"""
+    return render_template("perfil.html", alumno=ALUMNO_DATA)
 
 @app.route("/agenda")
 def agenda():
-    return render_template("agenda.html", estudiante=estudiante, tareas=tareas)
+    """Página de agenda y calendario"""
+    eventos = [
+        {"fecha": "1 de octubre", "hora": "10:00 AM - 11:30 AM", "descripcion": "Clase de Programación"},
+        {"fecha": "1 de octubre", "hora": "12:00 PM", "descripcion": "Tutoría"},
+        {"fecha": "3 de octubre", "hora": "2:00 PM", "descripcion": "Club de Matemáticas"}
+    ]
+    return render_template("agenda.html", eventos=eventos, alumno=ALUMNO_DATA)
 
 @app.route("/materias")
-def materias_route():
-    return render_template("materias.html", estudiante=estudiante, materias=materias)
+def materias():
+    """Página de materias y horarios"""
+    return render_template("materias.html", materias=MATERIAS, alumno=ALUMNO_DATA)
 
 @app.route("/anuncios")
-def anuncios_route():
-    return render_template("anuncios.html", estudiante=estudiante, anuncios=anuncios)
+def anuncios():
+    """Página de anuncios generales"""
+    return render_template("anuncios.html", anuncios=ANUNCIOS_RECIENTES, alumno=ALUMNO_DATA)
 
 @app.route("/tutoria")
 def tutoria():
-    return render_template("tutoria.html", estudiante=estudiante)
+    """Página de tutoría y horarios"""
+    historial_tutoria = [
+        {"fecha": "Viernes", "tema": "Proyecto"},
+        {"fecha": "Miércoles", "tema": "Tutoría"},
+        {"fecha": "Viernes", "tema": "Proyecto"}
+    ]
+    return render_template("tutoria.html", 
+                         horarios=HORARIOS_TUTORIA,
+                         historial=historial_tutoria,
+                         alumno=ALUMNO_DATA)
 
-@app.route("/actividades")
-def actividades_route():
-    return render_template("actividades.html", estudiante=estudiante, actividades=actividades)
+@app.route("/editar_perfil", methods=["GET", "POST"])
+def editar_perfil():
+    """Editar información del perfil"""
+    if request.method == "POST":
+        flash("Perfil actualizado correctamente", "success")
+        return redirect(url_for("perfil"))
+    
+    return render_template("editar_perfil.html", alumno=ALUMNO_DATA)
 
-@app.route("/calificaciones")
-def calificaciones():
-    return render_template("calificaciones.html", estudiante=estudiante, materias=materias)
-
-if __name__ == "__main__":
+if __name__ == "_main_":
     app.run(debug=True)

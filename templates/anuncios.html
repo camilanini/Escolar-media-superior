@@ -2,71 +2,66 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-12">
         <div class="card">
-            <div class="card-header bg-warning text-dark">
-                <i class="fas fa-bullhorn me-2"></i>Anuncios
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Anuncios Generales</h4>
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary btn-sm active">Todos</button>
+                    <button class="btn btn-outline-primary btn-sm">Académicos</button>
+                    <button class="btn btn-outline-primary btn-sm">Administrativos</button>
+                </div>
             </div>
             <div class="card-body">
-                <ul class="nav nav-tabs mb-4">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Todos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">General</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Recientes</a>
-                    </li>
-                </ul>
-                
                 {% for anuncio in anuncios %}
-                <div class="card announcement-card mb-3">
+                <div class="card mb-3 border-{% if anuncio.prioridad == 'alta' %}danger{% elif anuncio.prioridad == 'media' %}warning{% else %}info{% endif %}">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="card-title">{{ anuncio.titulo }}</h5>
-                            <span class="badge bg-warning">{{ anuncio.tipo }}</span>
+                            <div>
+                                <h5 class="card-title">
+                                    {{ anuncio.titulo }}
+                                    {% if anuncio.prioridad == 'alta' %}
+                                    <span class="badge bg-danger ms-2">¡Importante!</span>
+                                    {% endif %}
+                                </h5>
+                                <p class="card-text">
+                                    <i class="fas fa-building me-1"></i>Emisor: {{ anuncio.emisor }}<br>
+                                    <i class="fas fa-calendar me-1"></i>Fecha: {{ anuncio.fecha }}
+                                </p>
+                            </div>
+                            <span class="badge bg-{% if anuncio.prioridad == 'alta' %}danger{% elif anuncio.prioridad == 'media' %}warning{% else %}success{% endif %}">
+                                {{ anuncio.prioridad|upper }}
+                            </span>
                         </div>
-                        <p class="card-text">Control escolar</p>
-                        <p class="card-text"><small class="text-muted">{{ anuncio.fecha }}</small></p>
-                        <a href="#" class="btn btn-sm btn-outline-warning">Ver más</a>
+                        <p class="mt-2">
+                            {% if anuncio.titulo == "Convocatoria Becas 2025" %}
+                            Se informa a todos los estudiantes interesados que está abierta la convocatoria para becas 2025. 
+                            Los requisitos y formato de solicitud están disponibles en control escolar.
+                            {% elif anuncio.titulo == "Suspensión de Clases" %}
+                            Por actividades administrativas, se suspenden labores académicas el próximo viernes. 
+                            Las clases se reanudarán el lunes en horario normal.
+                            {% else %}
+                            A partir de la próxima semana habrá ajustes en los horarios de algunas materias. 
+                            Favor de verificar su horario actualizado.
+                            {% endif %}
+                        </p>
+                        <button class="btn btn-outline-primary btn-sm">Marcar como leído</button>
                     </div>
                 </div>
                 {% endfor %}
                 
-                <div class="text-center mt-4">
-                    <a href="#" class="btn btn-outline-warning">Cargar más</a>
-                </div>
+                <!-- Paginación -->
+                <nav aria-label="Navegación de anuncios">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
-    
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <i class="fas fa-chalkboard-teacher me-2"></i>Tutoría
-            </div>
-            <div class="card-body">
-                <h6>Historial de Sesiones</h6>
-                <ul class="list-group list-group-flush mb-3">
-                    <li class="list-group-item">Viernes - Proyecto</li>
-                    <li class="list-group-item">Viernes - Tutoría</li>
-                    <li class="list-group-item">Viernes - Proyecto</li>
-                </ul>
-                
-                <h6>Horarios</h6>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Viernes
-                        <span class="badge bg-primary rounded-pill">1:00 PM</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Miércoles
-                        <span class="badge bg-primary rounded-pill">1:00 PM</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+</div> 
 {% endblock %}

@@ -2,77 +2,93 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <div class="card">
-            <div class="card-body text-center">
-                <img src="https://ui-avatars.com/api/?name={{ estudiante.nombre }}&size=120&background=4361ee&color=fff" 
-                     class="profile-img mb-3" alt="Foto de perfil">
-                <h4>{{ estudiante.nombre }}</h4>
-                <p class="text-muted">{{ estudiante.semestre }}</p>
-                <div class="d-grid gap-2">
-                    <a href="#" class="btn btn-primary"><i class="fas fa-edit me-2"></i>Editar Perfil</a>
-                    <a href="{{ url_for('agenda') }}" class="btn btn-outline-primary"><i class="fas fa-calendar me-2"></i>Mi Agenda</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <i class="fas fa-info-circle me-2"></i>Información Personal
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-user me-2"></i>Mi Perfil</h4>
             </div>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-4">
-                        <strong>Nombre completo:</strong>
+                <div class="row">
+                    <!-- Avatar y Info Básica -->
+                    <div class="col-md-4 text-center">
+                        <img src="{{ url_for('static', filename='images/avatar.png') }}" 
+                             alt="Avatar" class="user-avatar mb-3">
+                        <h4>{{ alumno.nombre_completo }}</h4>
+                        <p class="text-muted">Estudiante de {{ alumno.especialidad }}</p>
+                        <a href="{{ url_for('editar_perfil') }}" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i>Editar Perfil
+                        </a>
                     </div>
-                    <div class="col-sm-8">
-                        {{ estudiante.nombre }}
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-sm-4">
-                        <strong>Número de control:</strong>
-                    </div>
-                    <div class="col-sm-8">
-                        {{ estudiante.numero_control }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card mt-4">
-            <div class="card-header bg-success text-white">
-                <i class="fas fa-graduation-cap me-2"></i>Información Académica
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-4">
-                        <strong>Especialidad:</strong>
-                    </div>
-                    <div class="col-sm-8">
-                        {{ estudiante.especialidad }}
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-sm-4">
-                        <strong>Semestre:</strong>
-                    </div>
-                    <div class="col-sm-8">
-                        {{ estudiante.grupo }}
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-sm-4">
-                        <strong>Turno:</strong>
-                    </div>
-                    <div class="col-sm-8">
-                        {{ estudiante.turno }}
+                    
+                    <!-- Información Detallada -->
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary">
+                                            <i class="fas fa-id-card me-2"></i>Información Personal
+                                        </h6>
+                                        <p><strong>Nombre completo:</strong><br>{{ alumno.nombre_completo }}</p>
+                                        <p><strong>CURP:</strong><br>{{ alumno.curp }}</p>
+                                        <p><strong>Número de control:</strong><br>{{ alumno.numero_control }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-success">
+                                            <i class="fas fa-graduation-cap me-2"></i>Información Académica
+                                        </h6>
+                                        <p><strong>Especialidad:</strong><br>{{ alumno.especialidad }}</p>
+                                        <p><strong>Semestre:</strong><br>{{ alumno.semestre }}°</p>
+                                        <p><strong>Grupo:</strong><br>{{ alumno.grupo }}</p>
+                                        <p><strong>Turno:</strong><br>{{ alumno.turno }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+
+<!-- Estadísticas Rápidas -->
+<div class="row mt-4">
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">{{ alumno.semestre }}</div>
+                <div class="text-muted">Semestre</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">4</div>
+                <div class="text-muted">Materias</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">85%</div>
+                <div class="text-muted">Asistencia</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">8.5</div>
+                <div class="text-muted">Promedio</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

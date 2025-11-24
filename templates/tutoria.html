@@ -2,77 +2,103 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8">
+    <!-- Horarios de Tutoría -->
+    <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-info text-white">
-                <i class="fas fa-chalkboard-teacher me-2"></i>Información de Tutoría
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-clock me-2"></i>Horarios de Tutoría</h4>
             </div>
             <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5>Detalles del Tutor</h5>
-                        <p><strong>Nombre:</strong> Mercedes López</p>
-                        <p><strong>Grupo:</strong> 5A</p>
-                        <p><strong>Correo:</strong> mercedes.lopez@escuela.edu</p>
+                <div class="list-group">
+                    {% for grupo, hora in horarios.items() %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">{{ grupo }}</h6>
+                            <small class="text-muted">Tutoría grupal</small>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{ hora }}</span>
                     </div>
-                    <div class="col-md-6">
-                        <h5>Horario de Tutoría</h5>
-                        <p><strong>Día:</strong> Viernes</p>
-                        <p><strong>Hora:</strong> 1:00 PM</p>
-                        <p><strong>Ubicación:</strong> Aula 5A</p>
-                    </div>
+                    {% endfor %}
                 </div>
                 
-                <h5>Próximas Sesiones</h5>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Tema</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>06/oct/2025</td>
-                                <td>Proyecto Final</td>
-                                <td><span class="badge bg-warning">Próxima</span></td>
-                                <td><a href="#" class="btn btn-sm btn-outline-primary">Preparar</a></td>
-                            </tr>
-                            <tr>
-                                <td>29/sep/2025</td>
-                                <td>Orientación Vocacional</td>
-                                <td><span class="badge bg-success">Completada</span></td>
-                                <td><a href="#" class="btn btn-sm btn-outline-info">Ver resumen</a></td>
-                            </tr>
-                            <tr>
-                                <td>22/sep/2025</td>
-                                <td>Plan de Estudios</td>
-                                <td><span class="badge bg-success">Completada</span></td>
-                                <td><a href="#" class="btn btn-sm btn-outline-info">Ver resumen</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Información del Tutor -->
+                <div class="mt-4 p-3 bg-light rounded">
+                    <h6><i class="fas fa-chalkboard-teacher me-2"></i>Tutor Asignado</h6>
+                    <p class="mb-1"><strong>Prof. María González</strong></p>
+                    <p class="mb-1 text-muted">Lic. en Ciencias de la Educación</p>
+                    <p class="mb-0 text-muted">Email: maria.gonzalez@escuela.edu</p>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="col-md-4">
+    <!-- Historial de Tutorías -->
+    <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-primary text-white">
-                <i class="fas fa-calendar-check me-2"></i>Agendar Cita
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historial de Tutorías</h4>
             </div>
             <div class="card-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="fecha" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" id="fecha">
+                {% for sesion in historial %}
+                <div class="card mb-2">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0">{{ sesion.fecha }}</h6>
+                                <small class="text-muted">Tema: {{ sesion.tema }}</small>
+                            </div>
+                            <span class="badge bg-success">Completada</span>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="hora" class="form-label">Hora</label>
-                        <select class="form-select" id="hora">
-                            <option selected>Selecciona una hora</option>
-                            <option value="1">1
+                </div>
+                {% endfor %}
+                
+                <!-- Próxima Tutoría -->
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h6 class="text-primary">Próxima Sesión</h6>
+                        <p class="mb-1"><strong>Viernes 20 de Octubre</strong></p>
+                        <p class="mb-1">1:00 PM - Sala de Tutores</p>
+                        <p class="mb-0 text-muted">Tema: Avance de proyectos semestrales</p>
+                        <button class="btn btn-primary btn-sm mt-2">Confirmar Asistencia</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Material de Tutoría -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-folder me-2"></i>Material de Tutoría</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-pdf fa-2x text-danger mb-2"></i>
+                                <h6>Guía de Proyecto</h6>
+                                <small class="text-muted">PDF - 2.3 MB</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-word fa-2x text-primary mb-2"></i>
+                                <h6>Formato de Reporte</h6>
+                                <small class="text-muted">DOCX - 1.1 MB</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Más materiales -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+{% endblock %}

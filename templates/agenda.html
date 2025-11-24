@@ -2,137 +2,71 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-12">
         <div class="card">
-            <div class="card-header bg-primary text-white">
-                <i class="fas fa-calendar me-2"></i>Mi Agenda - Octubre 2025
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-calendar me-2"></i>Agenda Escolar</h4>
+                <span class="badge bg-primary">Octubre 2025</span>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                <th>Dom</th>
-                                <th>Lun</th>
-                                <th>Mar</th>
-                                <th>Mié</th>
-                                <th>Jue</th>
-                                <th>Vie</th>
-                                <th>Sáb</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                                <td>10</td>
-                                <td>11</td>
-                            </tr>
-                            <tr>
-                                <td>12</td>
-                                <td>13</td>
-                                <td>14</td>
-                                <td>15</td>
-                                <td>16</td>
-                                <td>17</td>
-                                <td>18</td>
-                            </tr>
-                            <tr>
-                                <td>19</td>
-                                <td>20</td>
-                                <td>21</td>
-                                <td>22</td>
-                                <td>23</td>
-                                <td>24</td>
-                                <td>25</td>
-                            </tr>
-                            <tr>
-                                <td>26</td>
-                                <td>27</td>
-                                <td>28</td>
-                                <td>29</td>
-                                <td>30</td>
-                                <td>31</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="mt-4">
-                    <h5>Eventos del Día (1 de octubre)</h5>
-                    <div class="card task-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-0">10:00 AM - 11:30 AM</h6>
-                                    <p class="mb-0">Clase de Programación</p>
+                <div class="row">
+                    <!-- Calendario -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="calendar-mini" class="text-center">
+                                    <h5>Octubre 2025</h5>
+                                    <div class="calendar-grid">
+                                        {% for day in range(1, 32) %}
+                                        <div class="calendar-day {% if day == 18 %}current-day{% endif %}">
+                                            {{ day }}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                                <span class="badge bg-primary">En curso</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card task-card mt-2">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-0">12:00 PM</h6>
-                                    <p class="mb-0">Tutoría</p>
-                                </div>
-                                <span class="badge bg-warning">Próximo</span>
+                    
+                    <!-- Eventos del Día -->
+                    <div class="col-md-8">
+                        <h5>Eventos para Hoy</h5>
+                        {% for evento in eventos %}
+                        <div class="agenda-event">
+                            <h6 class="text-primary">{{ evento.descripcion }}</h6>
+                            <p class="text-muted mb-1">
+                                <i class="fas fa-clock me-1"></i>{{ evento.hora }}
+                            </p>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>{{ evento.fecha }}
+                            </small>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Próximos Eventos -->
+                        <div class="mt-4">
+                            <h5>Próximos Eventos</h5>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Examen de Matemáticas</h6>
+                                        <small class="text-muted">20 OCT</small>
+                                    </div>
+                                    <p class="mb-1">Unidad 3 - Álgebra</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Entrega Proyecto Programación</h6>
+                                        <small class="text-muted">25 OCT</small>
+                                    </div>
+                                    <p class="mb-1">Sistema de gestión escolar</p>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <i class="fas fa-tasks me-2"></i>Próximas Tareas
-            </div>
-            <div class="card-body">
-                {% for tarea in tareas %}
-                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-                    <div>
-                        <h6 class="mb-0">{{ tarea.materia }}</h6>
-                        <small class="text-muted">{{ tarea.descripcion }}</small>
-                    </div>
-                    <span class="badge bg-primary">{{ tarea.fecha }}</span>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="card mt-4">
-            <div class="card-header bg-info text-white">
-                <i class="fas fa-book me-2"></i>Mis Materias
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    {% for materia in materias %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ materia.nombre }}
-                        <span class="badge bg-primary rounded-pill">{{ materia.grupo }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} 
