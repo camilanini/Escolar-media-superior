@@ -32,13 +32,13 @@ except Exception as e:
         print("No se pudo conectar con MongoDB Atlas:", e)
 
 ALUMNO_DATA = {
-    "nombre_completo": "Mark Corona",
+    "nombre_completo": "Camila Corona",
     "curp": "CORM950515HDFRNL09",
     "numero_control": "2025001",
     "especialidad": "Programación",
     "semestre": "5",
     "grupo": "B",
-    "turno": "Matutino"
+    "turno": "Vespertino"
 }
 
 ANUNCIOS_RECIENTES = [
@@ -81,7 +81,7 @@ def index():
     """Página principal con resumen del estudiante"""
     return render_template("index.html", 
                          alumno=ALUMNO_DATA,
-                         anuncios=ANUNCIOS_RECIENTES[:2],  # Solo 2 más recientes
+                         anuncios=ANUNCIOS_RECIENTES[:4],  
                          horarios_tutoria=HORARIOS_TUTORIA)
 
 @app.route("/perfil")
@@ -122,15 +122,43 @@ def tutoria():
                          historial=historial_tutoria,
                          alumno=ALUMNO_DATA)
 
+@app.route("/ajustes", methods=["GET", "POST"])
+def ajustes():
+    """Página de ajustes de la aplicación"""
+    if request.method == "POST":
+        flash("Ajustes guardados correctamente", "success")
+        return redirect(url_for("ajustes"))
+    
+    return render_template("ajustes.html", alumno=ALUMNO_DATA)
+
 @app.route("/editar_perfil", methods=["GET", "POST"])
 def editar_perfil():
-    """Editar información del perfil"""
+    global ALUMNO_DATA
+    
     if request.method == "POST":
+        ALUMNO_DATA = {
+            "nombre_completo": request.form.get("nombre_completo"),
+            "curp": request.form.get("curp"),
+            "numero_control": request.form.get("numero_control"),
+            "especialidad": request.form.get("especialidad"),
+            "semestre": request.form.get("semestre"),
+            "grupo": request.form.get("grupo", ALUMNO_DATA["grupo"]),  # Agregar grupo al form
+            "turno": request.form.get("turno")
+        }
         flash("Perfil actualizado correctamente", "success")
         return redirect(url_for("perfil"))
     
     return render_template("editar_perfil.html", alumno=ALUMNO_DATA)
 
-if __name__ == "_main_":
+@app.route("/api/eventos", methods=["GET", "POST"])
+def api_eventos():
+    """API para manejar eventos de la agenda"""
+    if request.method == "POST":
+        data = request.get_json()
+        return {"status": "success", "message": "Evento guardado"}
+    
+    return {"eventos": []}
+
+if __name__ == "__main__":
     app.run(debug=True)
 

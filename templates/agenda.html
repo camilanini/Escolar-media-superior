@@ -6,11 +6,16 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0"><i class="fas fa-calendar me-2"></i>Agenda Escolar</h4>
-                <span class="badge bg-primary">Octubre 2025</span>
+                <div>
+                    <span class="badge bg-primary me-2" id="mesActual">Octubre 2025</span>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoEventoModal">
+                        <i class="fas fa-plus me-1"></i>Nuevo Evento
+                    </button>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <!-- Calendario -->
+                    <!-- Calendario Interactivo -->
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
@@ -18,7 +23,9 @@
                                     <h5>Octubre 2025</h5>
                                     <div class="calendar-grid">
                                         {% for day in range(1, 32) %}
-                                        <div class="calendar-day {% if day == 18 %}current-day{% endif %}">
+                                        <div class="calendar-day {% if day == 18 %}current-day{% endif %}" 
+                                             data-day="{{ day }}" 
+                                             id="dia-{{ day }}">
                                             {{ day }}
                                         </div>
                                         {% endfor %}
@@ -26,41 +33,44 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Formulario rápido para nuevo evento -->
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <h6>Agregar Evento Rápido</h6>
+                                <form id="formEventoRapido">
+                                    <div class="mb-2">
+                                        <label class="form-label">Fecha</label>
+                                        <input type="date" class="form-control" id="fechaRapida" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Hora</label>
+                                        <input type="time" class="form-control" id="horaRapida" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Descripción</label>
+                                        <input type="text" class="form-control" id="descripcionRapida" placeholder="¿Qué es el evento?" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                                        <i class="fas fa-plus me-1"></i>Agregar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Eventos del Día -->
+                    <!-- Eventos del Día Seleccionado -->
                     <div class="col-md-8">
-                        <h5>Eventos para Hoy</h5>
-                        {% for evento in eventos %}
-                        <div class="agenda-event">
-                            <h6 class="text-primary">{{ evento.descripcion }}</h6>
-                            <p class="text-muted mb-1">
-                                <i class="fas fa-clock me-1"></i>{{ evento.hora }}
-                            </p>
-                            <small class="text-muted">
-                                <i class="fas fa-calendar me-1"></i>{{ evento.fecha }}
-                            </small>
+                        <h5 id="tituloEventosDia">Eventos para Hoy (18 Octubre)</h5>
+                        <div id="eventosContainer">
+                            <!-- Los eventos se cargarán dinámicamente -->
                         </div>
-                        {% endfor %}
                         
                         <!-- Próximos Eventos -->
                         <div class="mt-4">
                             <h5>Próximos Eventos</h5>
-                            <div class="list-group">
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">Examen de Matemáticas</h6>
-                                        <small class="text-muted">20 OCT</small>
-                                    </div>
-                                    <p class="mb-1">Unidad 3 - Álgebra</p>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1">Entrega Proyecto Programación</h6>
-                                        <small class="text-muted">25 OCT</small>
-                                    </div>
-                                    <p class="mb-1">Sistema de gestión escolar</p>
-                                </a>
+                            <div class="list-group" id="proximosEventos">
+                                <!-- Los próximos eventos se cargarán dinámicamente -->
                             </div>
                         </div>
                     </div>
@@ -69,5 +79,345 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
+<!-- Modal para Nuevo Evento -->
+<div class="modal fade" id="nuevoEventoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevoEvento">
+                    <div class="mb-3">
+                        <label class="form-label">Título del Evento *</label>
+                        <input type="text" class="form-control" id="tituloEvento" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha *</label>
+                        <input type="date" class="form-control" id="fechaEvento" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hora</label>
+                        <input type="time" class="form-control" id="horaEvento">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionEvento" rows="3" placeholder="Descripción opcional..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Evento</label>
+                        <select class="form-select" id="tipoEvento">
+                            <option value="clase">Clase</option>
+                            <option value="examen">Examen</option>
+                            <option value="tarea">Tarea</option>
+                            <option value="tutoria">Tutoría</option>
+                            <option value="personal">Personal</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="guardarEventoBtn">Guardar Evento</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let eventos = JSON.parse(localStorage.getItem('eventosAgenda')) || [];
+let diaSeleccionado = 18; 
+
+if (eventos.length === 0) {
+    eventos = [
+        {
+            id: '1',
+            titulo: 'Clase de Programación',
+            fecha: '2025-10-18',
+            hora: '10:00',
+            descripcion: 'Clase regular de programación',
+            tipo: 'clase'
+        },
+        {
+            id: '2',
+            titulo: 'Tutoría',
+            fecha: '2025-10-18',
+            hora: '12:00',
+            descripcion: 'Sesión de tutoría grupal',
+            tipo: 'tutoria'
+        }
+    ];
+    localStorage.setItem('eventosAgenda', JSON.stringify(eventos));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    inicializarAgenda();
+    
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('fechaRapida').min = hoy;
+    document.getElementById('fechaEvento').min = hoy;
+    
+    document.querySelectorAll('.calendar-day').forEach(dayElement => {
+        dayElement.addEventListener('click', function() {
+            const dia = parseInt(this.getAttribute('data-day'));
+            seleccionarDia(dia);
+        });
+    });
+    
+    document.getElementById('guardarEventoBtn').addEventListener('click', guardarEvento);
+});
+
+function inicializarAgenda() {
+    mostrarEventosDelDia(diaSeleccionado);
+    actualizarProximosEventos();
+}
+
+function seleccionarDia(dia) {
+    console.log('Seleccionando día:', dia);
+    
+    document.querySelectorAll('.calendar-day').forEach(element => {
+        element.classList.remove('selected-day');
+    });
+    
+    const diaElement = document.getElementById(`dia-${dia}`);
+    if (diaElement) {
+        diaElement.classList.add('selected-day');
+    }
+    
+    diaSeleccionado = dia;
+    mostrarEventosDelDia(dia);
+}
+
+function mostrarEventosDelDia(dia) {
+    const eventosContainer = document.getElementById('eventosContainer');
+    const tituloEventos = document.getElementById('tituloEventosDia');
+    
+    const fechaCompleta = `2025-10-${dia.toString().padStart(2, '0')}`;
+    
+    const eventosDia = eventos.filter(evento => {
+        return evento.fecha === fechaCompleta;
+    });
+    
+    tituloEventos.textContent = `Eventos para el ${dia} de Octubre`;
+    
+    if (eventosDia.length === 0) {
+        eventosContainer.innerHTML = `
+            <div class="text-center text-muted py-4">
+                <i class="fas fa-calendar-times fa-2x mb-2"></i>
+                <p>No hay eventos para este día</p>
+            </div>
+        `;
+    } else {
+        eventosContainer.innerHTML = eventosDia.map(evento => `
+            <div class="agenda-event mb-3 p-3 border rounded">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <h6 class="text-primary mb-1">${evento.titulo}</h6>
+                        <p class="text-muted mb-1">
+                            <i class="fas fa-clock me-1"></i>${evento.hora || 'Todo el día'}
+                        </p>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>${formatFecha(evento.fecha)}
+                        </small>
+                        ${evento.descripcion ? `<p class="mt-2 mb-0 small">${evento.descripcion}</p>` : ''}
+                        <span class="badge bg-secondary mt-1">${evento.tipo}</span>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="eliminarEvento('${evento.id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+function formatFecha(fechaStr) {
+    const fecha = new Date(fechaStr);
+    return fecha.toLocaleDateString('es-ES', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+    });
+}
+
+function guardarEvento() {
+    const titulo = document.getElementById('tituloEvento').value;
+    const fecha = document.getElementById('fechaEvento').value;
+    const hora = document.getElementById('horaEvento').value;
+    const descripcion = document.getElementById('descripcionEvento').value;
+    const tipo = document.getElementById('tipoEvento').value;
+    
+    if (!titulo || !fecha) {
+        alert('Por favor completa al menos el título y la fecha');
+        return;
+    }
+    
+    const nuevoEvento = {
+        id: Date.now().toString(),
+        titulo: titulo,
+        fecha: fecha,
+        hora: hora,
+        descripcion: descripcion,
+        tipo: tipo
+    };
+    
+    eventos.push(nuevoEvento);
+    localStorage.setItem('eventosAgenda', JSON.stringify(eventos));
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('nuevoEventoModal'));
+    modal.hide();
+    document.getElementById('formNuevoEvento').reset();
+    
+    const fechaEvento = new Date(fecha);
+    if (fechaEvento.getMonth() === 9 && fechaEvento.getFullYear() === 2025) { // Octubre es mes 9
+        mostrarEventosDelDia(fechaEvento.getDate());
+    }
+    actualizarProximosEventos();
+    
+    alert('Evento guardado correctamente!');
+}
+
+document.getElementById('formEventoRapido').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fecha = document.getElementById('fechaRapida').value;
+    const hora = document.getElementById('horaRapida').value;
+    const descripcion = document.getElementById('descripcionRapida').value;
+    
+    if (!fecha || !hora || !descripcion) {
+        alert('Por favor completa todos los campos');
+        return;
+    }
+    
+    const nuevoEvento = {
+        id: Date.now().toString(),
+        titulo: descripcion,
+        fecha: fecha,
+        hora: hora,
+        descripcion: descripcion,
+        tipo: 'personal'
+    };
+    
+    eventos.push(nuevoEvento);
+    localStorage.setItem('eventosAgenda', JSON.stringify(eventos));
+    
+    this.reset();
+    
+    const fechaEvento = new Date(fecha);
+    if (fechaEvento.getMonth() === 9 && fechaEvento.getFullYear() === 2025) {
+        mostrarEventosDelDia(fechaEvento.getDate());
+    }
+    actualizarProximosEventos();
+    
+    alert('Evento agregado!');
+});
+
+function eliminarEvento(eventoId) {
+    if (confirm('¿Estás seguro de que quieres eliminar este evento?')) {
+        eventos = eventos.filter(evento => evento.id !== eventoId);
+        localStorage.setItem('eventosAgenda', JSON.stringify(eventos));
+        mostrarEventosDelDia(diaSeleccionado);
+        actualizarProximosEventos();
+    }
+}
+
+function actualizarProximosEventos() {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); 
+    
+    const proximos = eventos
+        .filter(evento => {
+            const fechaEvento = new Date(evento.fecha);
+            fechaEvento.setHours(0, 0, 0, 0);
+            return fechaEvento >= hoy;
+        })
+        .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+        .slice(0, 5);
+    
+    const container = document.getElementById('proximosEventos');
+    
+    if (proximos.length === 0) {
+        container.innerHTML = `
+            <div class="text-center text-muted py-3">
+                <i class="fas fa-calendar-check fa-lg mb-2"></i>
+                <p>No hay próximos eventos</p>
+            </div>
+        `;
+    } else {
+        container.innerHTML = proximos.map(evento => {
+            const fechaEvento = new Date(evento.fecha);
+            const fechaFormateada = fechaEvento.toLocaleDateString('es-ES', { 
+                day: 'numeric', 
+                month: 'short' 
+            }).toUpperCase();
+            
+            return `
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${evento.titulo}</h6>
+                            <p class="mb-1 small">${evento.descripcion || ''}</p>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>${evento.hora || 'Todo el día'}
+                            </small>
+                        </div>
+                        <small class="text-muted ms-2">${fechaFormateada}</small>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+</script>
+
+<style>
+.calendar-day {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 2px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+    text-align: center;
+}
+
+.calendar-day:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.calendar-day.current-day {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.calendar-day.selected-day {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.agenda-event {
+    border-left: 4px solid #007bff;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.agenda-event:hover {
+    background-color: #e9ecef;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-top: 10px;
+}
+</style>
+{% endblock %}

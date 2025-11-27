@@ -7,9 +7,9 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Anuncios Generales</h4>
                 <div class="btn-group">
-                    <button class="btn btn-outline-primary btn-sm active">Todos</button>
-                    <button class="btn btn-outline-primary btn-sm">Académicos</button>
-                    <button class="btn btn-outline-primary btn-sm">Administrativos</button>
+                    <button class="btn btn-outline-primary btn-sm active" onclick="filtrarAnuncios('todos')">Todos</button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="filtrarAnuncios('academicos')">Académicos</button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="filtrarAnuncios('administrativos')">Administrativos</button>
                 </div>
             </div>
             <div class="card-body">
@@ -45,7 +45,7 @@
                             Favor de verificar su horario actualizado.
                             {% endif %}
                         </p>
-                        <button class="btn btn-outline-primary btn-sm">Marcar como leído</button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="marcarComoLeido(this)">Marcar como leído</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -64,5 +64,70 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
+<script>
+function filtrarAnuncios(categoria) {
+    const anuncios = document.querySelectorAll('.card.mb-3');
+    const botones = document.querySelectorAll('.btn-group .btn');
+    
+    botones.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    anuncios.forEach(anuncio => {
+        if (categoria === 'todos') {
+            anuncio.style.display = 'block';
+        } else if (categoria === 'academicos') {
+            const titulo = anuncio.querySelector('.card-title').textContent;
+            const esAcademico = titulo.includes('Becas') || 
+                               titulo.includes('Clases') || 
+                               titulo.includes('Horarios') ||
+                               titulo.includes('Exámenes') ||
+                               titulo.includes('Calificaciones');
+            anuncio.style.display = esAcademico ? 'block' : 'none';
+        } else if (categoria === 'administrativos') {
+            const titulo = anuncio.querySelector('.card-title').textContent;
+            const esAdministrativo = titulo.includes('Administrativo') || 
+                                   titulo.includes('Trámites') ||
+                                   titulo.includes('Documentación');
+            anuncio.style.display = esAdministrativo ? 'block' : 'none';
+        }
+    });
+}
+
+function marcarComoLeido(boton) {
+    const card = boton.closest('.card');
+    card.style.opacity = '0.7';
+    card.style.backgroundColor = '#f8f9fa';
+    boton.textContent = '✓ Leído';
+    boton.classList.remove('btn-outline-primary');
+    boton.classList.add('btn-outline-success');
+    boton.disabled = true;
+    
+    const titulo = card.querySelector('.card-title').textContent.trim();
+    const leidos = JSON.parse(localStorage.getItem('anunciosLeidos')) || [];
+    if (!leidos.includes(titulo)) {
+        leidos.push(titulo);
+        localStorage.setItem('anunciosLeidos', JSON.stringify(leidos));
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const leidos = JSON.parse(localStorage.getItem('anunciosLeidos')) || [];
+    const anuncios = document.querySelectorAll('.card.mb-3');
+    
+    anuncios.forEach(anuncio => {
+        const titulo = anuncio.querySelector('.card-title').textContent.trim();
+        const boton = anuncio.querySelector('.btn-outline-primary');
+        
+        if (leidos.includes(titulo) && boton) {
+            anuncio.style.opacity = '0.7';
+            anuncio.style.backgroundColor = '#f8f9fa';
+            boton.textContent = '✓ Leído';
+            boton.classList.remove('btn-outline-primary');
+            boton.classList.add('btn-outline-success');
+            boton.disabled = true;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-cog me-2"></i>Ajustes</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <!-- Notificaciones -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-bell me-2"></i>Notificaciones
+                        </h5>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="notifAnuncios" checked>
+                            <label class="form-check-label" for="notifAnuncios">
+                                Notificaciones de anuncios importantes
+                            </label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="notifTareas" checked>
+                            <label class="form-check-label" for="notifTareas">
+                                Recordatorios de tareas
+                            </label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="notifTutoria">
+                            <label class="form-check-label" for="notifTutoria">
+                                Recordatorios de tutoría
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Apariencia -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-palette me-2"></i>Apariencia
+                        </h5>
+                        <div class="mb-3">
+                            <label class="form-label">Tema</label>
+                            <select class="form-select" id="tema">
+                                <option value="claro">Claro</option>
+                                <option value="oscuro">Oscuro</option>
+                                <option value="auto">Automático</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Privacidad -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-shield-alt me-2"></i>Privacidad
+                        </h5>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="perfilPublico">
+                            <label class="form-check-label" for="perfilPublico">
+                                Perfil visible para otros estudiantes
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Datos -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-database me-2"></i>Datos
+                        </h5>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary" onclick="exportarDatos()">
+                                <i class="fas fa-download me-2"></i>Exportar mis datos
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" onclick="eliminarCuenta()">
+                                <i class="fas fa-trash me-2"></i>Eliminar cuenta
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Guardar Ajustes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function exportarDatos() {
+    alert('Función de exportación de datos activada. En una aplicación real, esto descargaría un archivo con tus datos.');
+}
+
+function eliminarCuenta() {
+    if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+        alert('Solicitud de eliminación de cuenta enviada. En una aplicación real, esto iniciaría el proceso de eliminación.');
+    }
+}
+</script>
+{% endblock %}
