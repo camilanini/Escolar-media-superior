@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
@@ -7,7 +7,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET", "dev-secret")
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://paolaco1308_db_user:admin321@mediasuperior.ephlbzn.mongodb.net/mediasuperior")
-
 try:
     client = MongoClient(
         MONGO_URI,
@@ -42,6 +41,27 @@ ALUMNO_DATA = {
     "turno": "Matutino"
 }
 
+ANUNCIOS_RECIENTES = [
+    {
+        "titulo": "Convocatoria Becas 2025",
+        "emisor": "Control Escolar",
+        "fecha": "07/OCT/2025",
+        "prioridad": "alta"
+    },
+    {
+        "titulo": "Suspensión de Clases",
+        "emisor": "Control Escolar",
+        "fecha": "06/OCT/2025",
+        "prioridad": "media"
+    },
+    {
+        "titulo": "Cambio Horarios",
+        "emisor": "Dirección",
+        "fecha": "04/OCT/2025",
+        "prioridad": "baja"
+    }
+]
+
 HORARIOS_TUTORIA = {
     "5A": "1:00 PM",
     "5B": "1:00 PM",
@@ -49,30 +69,19 @@ HORARIOS_TUTORIA = {
     "Viernes": "1:00 PM"
 }
 
+MATERIAS = [
+    {"nombre": "Programación", "horario": "J14", "profesor": "Lic. García"},
+    {"nombre": "Matemáticas", "horario": "L25", "profesor": "Mtro. López"},
+    {"nombre": "Historia", "horario": "M04", "profesor": "Prof. Martínez"},
+    {"nombre": "Inglés", "horario": "V03", "profesor": "Mrs. Smith"}
+]
 
 @app.route("/")
 def index():
-    """Página principal"""
-    anuncios = [
-        {
-            "titulo": "Convocatoria Becas 2025",
-            "emisor": "Control Escolar",
-            "fecha": "07/OCT/2025",
-            "prioridad": "alta",
-            "contenido": "Se informa a todos los estudiantes interesados que está abierta la convocatoria para becas 2025. Los requisitos y formato de solicitud están disponibles en control escolar."
-        },
-        {
-            "titulo": "Suspensión de Clases",
-            "emisor": "Control Escolar",
-            "fecha": "06/OCT/2025",
-            "prioridad": "media",
-            "contenido": "Por actividades administrativas, se suspenden labores académicas el próximo viernes. Las clases se reanudarán el lunes en horario normal."
-        }
-    ]
-    
+    """Página principal con resumen del estudiante"""
     return render_template("index.html", 
                          alumno=ALUMNO_DATA,
-                         anuncios=anuncios,
+                         anuncios=ANUNCIOS_RECIENTES[:2],  # Solo 2 más recientes
                          horarios_tutoria=HORARIOS_TUTORIA)
 
 @app.route("/perfil")
@@ -80,60 +89,48 @@ def perfil():
     """Página de perfil del estudiante"""
     return render_template("perfil.html", alumno=ALUMNO_DATA)
 
+@app.route("/agenda")
+def agenda():
+    """Página de agenda y calendario"""
+    eventos = [
+        {"fecha": "1 de octubre", "hora": "10:00 AM - 11:30 AM", "descripcion": "Clase de Programación"},
+        {"fecha": "1 de octubre", "hora": "12:00 PM", "descripcion": "Tutoría"},
+        {"fecha": "3 de octubre", "hora": "2:00 PM", "descripcion": "Club de Matemáticas"}
+    ]
+    return render_template("agenda.html", eventos=eventos, alumno=ALUMNO_DATA)
+
+@app.route("/materias")
+def materias():
+    """Página de materias y horarios"""
+    return render_template("materias.html", materias=MATERIAS, alumno=ALUMNO_DATA)
+
+@app.route("/anuncios")
+def anuncios():
+    """Página de anuncios generales"""
+    return render_template("anuncios.html", anuncios=ANUNCIOS_RECIENTES, alumno=ALUMNO_DATA)
+
+@app.route("/tutoria")
+def tutoria():
+    """Página de tutoría y horarios"""
+    historial_tutoria = [
+        {"fecha": "Viernes", "tema": "Proyecto"},
+        {"fecha": "Miércoles", "tema": "Tutoría"},
+        {"fecha": "Viernes", "tema": "Proyecto"}
+    ]
+    return render_template("tutoria.html", 
+                         horarios=HORARIOS_TUTORIA,
+                         historial=historial_tutoria,
+                         alumno=ALUMNO_DATA)
+
 @app.route("/editar_perfil", methods=["GET", "POST"])
 def editar_perfil():
     """Editar información del perfil"""
     if request.method == "POST":
-        flash("✅ Perfil actualizado correctamente", "success")
+        flash("Perfil actualizado correctamente", "success")
         return redirect(url_for("perfil"))
     
     return render_template("editar_perfil.html", alumno=ALUMNO_DATA)
 
-@app.route("/agenda")
-def agenda():
-    """Página de agenda"""
-    return render_template("agenda.html", alumno=ALUMNO_DATA)
-
-@app.route("/materias")
-def materias():
-    """Página de materias"""
-    return render_template("materias.html", alumno=ALUMNO_DATA)
-
-@app.route("/anuncios")
-def anuncios():
-    """Página de anuncios"""
-    anuncios_data = [
-        {
-            "titulo": "Convocatoria Becas 2025",
-            "emisor": "Control Escolar",
-            "fecha": "07/OCT/2025",
-            "prioridad": "alta",
-            "tipo": "academico",
-            "contenido": "Se informa a todos los estudiantes interesados que está abierta la convocatoria para becas 2025. Los requisitos y formato de solicitud están disponibles en control escolar."
-        },
-        {
-            "titulo": "Suspensión de Clases", 
-            "emisor": "Control Escolar",
-            "fecha": "06/OCT/2025",
-            "prioridad": "media",
-            "tipo": "administrativo",
-            "contenido": "Por actividades administrativas, se suspenden labores académicas el próximo viernes. Las clases se reanudarán el lunes en horario normal."
-        }
-    ]
-    
-    return render_template("anuncios.html", 
-                         anuncios=anuncios_data,
-                         pagina_actual=1,
-                         total_paginas=1,
-                         filtro_actual='todos',
-                         alumno=ALUMNO_DATA)
-
-@app.route("/tutoria")
-def tutoria():
-    """Página de tutoría"""
-    return render_template("tutoria.html", 
-                         horarios=HORARIOS_TUTORIA,
-                         alumno=ALUMNO_DATA)
-
 if __name__ == "_main_":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(debug=True)
+

@@ -3,358 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Media Superior - Plataforma Escolar{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
+    <title>Media Superior - Plataforma Escolar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- CSS Personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
-    
-    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navbar Principal -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <!-- Logo y Nombre -->
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" 
-                     alt="Media Superior" 
-                     width="40" 
-                     height="40" 
-                     class="me-2 rounded-circle">
-                <div>
-                    <strong class="fs-4">Media Superior</strong>
-                    <small class="d-block text-light opacity-75" style="font-size: 0.7rem;">
-                        Plataforma Escolar
-                    </small>
-                </div>
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Media Superior
             </a>
-
-            <!-- Botón para móviles -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Menú Principal -->
-            <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <!-- Notificaciones -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-bell fa-lg"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                3
-                                <span class="visually-hidden">notificaciones no leídas</span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><h6 class="dropdown-header">Notificaciones Recientes</h6></li>
-                            <li><a class="dropdown-item" href="#">
-                                <i class="fas fa-book text-primary me-2"></i>
-                                Nueva tarea en Programación
-                            </a></li>
-                            <li><a class="dropdown-item" href="#">
-                                <i class="fas fa-calendar text-warning me-2"></i>
-                                Tutoría mañana a las 1:00 PM
-                            </a></li>
-                            <li><a class="dropdown-item" href="#">
-                                <i class="fas fa-bullhorn text-info me-2"></i>
-                                Nuevo anuncio publicado
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-center text-primary" href="#">
-                                Ver todas las notificaciones
-                            </a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Perfil de Usuario -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ url_for('static', filename='images/avatar.png') }}" 
-                                 alt="Avatar" 
-                                 width="32" 
-                                 height="32" 
-                                 class="rounded-circle me-2">
-                            <span class="d-none d-md-inline">
-                                {{ alumno.nombre_completo.split()[0] if alumno else 'Estudiante' }}
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <div class="dropdown-header text-center">
-                                    <img src="{{ url_for('static', filename='images/avatar.png') }}" 
-                                         alt="Avatar" 
-                                         width="60" 
-                                         height="60" 
-                                         class="rounded-circle mb-2 border border-3 border-primary">
-                                    <h6 class="mb-0">{{ alumno.nombre_completo if alumno else 'Estudiante' }}</h6>
-                                    <small class="text-muted">{{ alumno.especialidad if alumno else 'Especialidad' }}</small>
-                                </div>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('perfil') }}">
-                                    <i class="fas fa-user me-2 text-primary"></i>Mi Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('agenda') }}">
-                                    <i class="fas fa-calendar me-2 text-success"></i>Mi Agenda
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cog me-2 text-secondary"></i>Configuración
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="#">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        {{ alumno.nombre_completo.split()[0] }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ url_for('perfil') }}">Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Contenedor Principal -->
+    <!-- Sidebar y Contenido Principal -->
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 sidebar bg-light shadow-sm">
+            <div class="col-md-3 col-lg-2 sidebar bg-light">
                 <div class="position-sticky pt-3">
-                    <!-- Información Rápida del Estudiante -->
-                    <div class="card mb-4 border-0 bg-primary text-white">
-                        <div class="card-body text-center py-3">
-                            <h6 class="card-title mb-1">
-                                <i class="fas fa-graduation-cap me-1"></i>
-                                {{ alumno.especialidad if alumno else 'Programación' }}
-                            </h6>
-                            <p class="card-text small mb-0">
-                                {{ alumno.semestre if alumno else '5' }}° Semestre • Grupo {{ alumno.grupo if alumno else 'B' }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Navegación Principal -->
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2">
-                            <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" 
-                               href="{{ url_for('index') }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-home fa-fw me-3"></i>
-                                    <span>Inicio</span>
-                                </div>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('index') }}">
+                                <i class="fas fa-home me-2"></i>Inicio
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
-                            <a class="nav-link {% if request.endpoint == 'perfil' or request.endpoint == 'editar_perfil' %}active{% endif %}" 
-                               href="{{ url_for('perfil') }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-user fa-fw me-3"></i>
-                                    <span>Mi Perfil</span>
-                                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('perfil') }}">
+                                <i class="fas fa-user me-2"></i>Mi Perfil
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
-                            <a class="nav-link {% if request.endpoint == 'agenda' %}active{% endif %}" 
-                               href="{{ url_for('agenda') }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-calendar fa-fw me-3"></i>
-                                    <span>Agenda</span>
-                                    <span class="badge bg-danger ms-auto">2</span>
-                                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('agenda') }}">
+                                <i class="fas fa-calendar me-2"></i>Agenda
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
-                            <a class="nav-link {% if request.endpoint == 'materias' %}active{% endif %}" 
-                               href="{{ url_for('materias') }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-book fa-fw me-3"></i>
-                                    <span>Materias</span>
-                                    <span class="badge bg-warning ms-auto">3</span>
-                                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('materias') }}">
+                                <i class="fas fa-book me-2"></i>Materias
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
-                            <a class="nav-link {% if request.endpoint == 'anuncios' %}active{% endif %}" 
-                               href="{{ url_for('anuncios') }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-bullhorn fa-fw me-3"></i>
-                                    <span>Anuncios</span>
-                                    <span class="badge bg-success ms-auto">5</span>
-                                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('anuncios') }}">
+                                <i class="fas fa-bullhorn me-2"></i>Anuncios
                             </a>
                         </li>
-                        <li class="nav-item mb-2">
-                            <a class="nav-link {% if request.endpoint == 'tutoria' %}active{% endif %}" 
-                               href="{{ url_for('tutoria') }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-chalkboard-teacher fa-fw me-3"></i>
-                                    <span>Tutoría</span>
-                                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('tutoria') }}">
+                                <i class="fas fa-chalkboard-teacher me-2"></i>Tutoría
                             </a>
                         </li>
                     </ul>
-
-                    <!-- Separador -->
-                    <hr class="my-4">
-
-                    <!-- Accesos Rápidos -->
-                    <div class="px-3">
-                        <h6 class="text-uppercase text-muted small fw-bold mb-3">
-                            <i class="fas fa-rocket me-1"></i>Accesos Rápidos
-                        </h6>
-                        <div class="d-grid gap-2">
-                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-tasks me-1"></i>Tareas Pendientes
-                            </a>
-                            <a href="#" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-chart-line me-1"></i>Calificaciones
-                            </a>
-                            <a href="#" class="btn btn-outline-info btn-sm">
-                                <i class="fas fa-download me-1"></i>Materiales
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Información del Sistema -->
-                    <div class="mt-4 px-3">
-                        <div class="card border-0 bg-light">
-                            <div class="card-body py-2">
-                                <small class="text-muted d-block">
-                                    <i class="fas fa-circle text-success me-1"></i>
-                                    En línea
-                                </small>
-                                <small class="text-muted">
-                                    <i class="fas fa-clock me-1"></i>
-                                    {{ now.strftime('%d/%b/%Y %H:%M') if now else 'Sistema' }}
-                                </small>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </nav>
+            </div>
 
             <!-- Contenido Principal -->
-            <main class="col-md-9 col-lg-10 main-content">
-                <!-- Alertas Flash -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <!-- Alertas -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
-                            <div class="alert alert-{{ category }} alert-dismissible fade show mt-3 mx-3 shadow-sm" role="alert">
-                                <div class="d-flex align-items-center">
-                                    {% if category == 'success' %}
-                                        <i class="fas fa-check-circle me-2 fa-lg"></i>
-                                    {% elif category == 'danger' %}
-                                        <i class="fas fa-exclamation-triangle me-2 fa-lg"></i>
-                                    {% elif category == 'warning' %}
-                                        <i class="fas fa-exclamation-circle me-2 fa-lg"></i>
-                                    {% elif category == 'info' %}
-                                        <i class="fas fa-info-circle me-2 fa-lg"></i>
-                                    {% else %}
-                                        <i class="fas fa-bell me-2 fa-lg"></i>
-                                    {% endif %}
-                                    <div>{{ message }}</div>
-                                </div>
+                            <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+                                {{ message }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
 
-                <!-- Breadcrumb -->
-                <nav aria-label="breadcrumb" class="mx-3 mt-3">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{ url_for('index') }}" class="text-decoration-none">
-                                <i class="fas fa-home me-1"></i>Inicio
-                            </a>
-                        </li>
-                        {% block breadcrumb %}{% endblock %}
-                    </ol>
-                </nav>
-
                 <!-- Contenido de cada página -->
-                <div class="container-fluid py-3">
-                    {% block content %}{% endblock %}
-                </div>
-            </main>
+                {% block content %}{% endblock %}
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="mb-3">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" 
-                             alt="Media Superior" 
-                             width="30" 
-                             height="30" 
-                             class="me-2 rounded-circle">
-                        Media Superior
-                    </h5>
-                    <p class="mb-0 text-muted">
-                        Plataforma escolar diseñada para facilitar el aprendizaje y la gestión académica.
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <h6 class="mb-3">Enlaces Rápidos</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('index') }}" class="text-muted text-decoration-none">Inicio</a></li>
-                        <li><a href="{{ url_for('perfil') }}" class="text-muted text-decoration-none">Mi Perfil</a></li>
-                        <li><a href="{{ url_for('materias') }}" class="text-muted text-decoration-none">Materias</a></li>
-                        <li><a href="{{ url_for('anuncios') }}" class="text-muted text-decoration-none">Anuncios</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h6 class="mb-3">Contacto</h6>
-                    <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-envelope me-2"></i>soporte@mediasuperior.edu</li>
-                        <li><i class="fas fa-phone me-2"></i>(55) 1234-5678</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i>Ciudad de México</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4 bg-secondary">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <small class="text-muted">
-                        &copy; 2025 Media Superior. Todos los derechos reservados.
-                    </small>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small class="text-muted">
-                        Desarrollado con <i class="fas fa-heart text-danger"></i> para la educación
-                    </small>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- JavaScript Personalizado -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    
-    {% block extra_js %}{% endblock %}
 </body>
 </html>
+

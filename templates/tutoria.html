@@ -1,298 +1,105 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Tutorías</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .stats-card {
-            transition: transform 0.3s;
-        }
-        .stats-card:hover {
-            transform: translateY(-5px);
-        }
-        .tutoria-card {
-            border-left: 4px solid #0d6efd;
-        }
-        .proxima-sesion {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-graduation-cap me-2"></i>Sistema Tutorías
-            </a>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <div class="container mt-4">
-        <!-- Header -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h1><i class="fas fa-chalkboard-teacher me-2"></i>Mis Tutorías</h1>
-                <p class="text-muted">Gestiona tus sesiones de tutoría académica</p>
+{% block content %}
+<div class="row">
+    <!-- Horarios de Tutoría -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-clock me-2"></i>Horarios de Tutoría</h4>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for grupo, hora in horarios.items() %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">{{ grupo }}</h6>
+                            <small class="text-muted">Tutoría grupal</small>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{ hora }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Información del Tutor -->
+                <div class="mt-4 p-3 bg-light rounded">
+                    <h6><i class="fas fa-chalkboard-teacher me-2"></i>Tutor Asignado</h6>
+                    <p class="mb-1"><strong>Prof. María González</strong></p>
+                    <p class="mb-1 text-muted">Lic. en Ciencias de la Educación</p>
+                    <p class="mb-0 text-muted">Email: maria.gonzalez@escuela.edu</p>
+                </div>
             </div>
         </div>
-
-        <!-- Estadísticas -->
-        <div class="row mb-4" id="statsSection">
-            <div class="col-md-3 mb-3">
-                <div class="card stats-card bg-primary text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-calendar-check fa-2x mb-2"></i>
-                        <h3 data-counter="12">0</h3>
-                        <p>Sesiones Completadas</p>
+    </div>
+    
+    <!-- Historial de Tutorías -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historial de Tutorías</h4>
+            </div>
+            <div class="card-body">
+                {% for sesion in historial %}
+                <div class="card mb-2">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-0">{{ sesion.fecha }}</h6>
+                                <small class="text-muted">Tema: {{ sesion.tema }}</small>
+                            </div>
+                            <span class="badge bg-success">Completada</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card stats-card bg-success text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-clock fa-2x mb-2"></i>
-                        <h3 data-counter="24">0</h3>
-                        <p>Horas Totales</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card stats-card bg-warning text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-star fa-2x mb-2"></i>
-                        <h3 data-counter="95">0</h3>
-                        <p>% Satisfacción</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <div class="card stats-card bg-info text-white">
-                    <div class="card-body text-center">
-                        <i class="fas fa-users fa-2x mb-2"></i>
-                        <h3 data-counter="8">0</h3>
-                        <p>Tutores Disponibles</p>
+                {% endfor %}
+                
+                <!-- Próxima Tutoría -->
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h6 class="text-primary">Próxima Sesión</h6>
+                        <p class="mb-1"><strong>Viernes 20 de Octubre</strong></p>
+                        <p class="mb-1">1:00 PM - Sala de Tutores</p>
+                        <p class="mb-0 text-muted">Tema: Avance de proyectos semestrales</p>
+                        <button class="btn btn-primary btn-sm mt-2">Confirmar Asistencia</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Próxima Sesión -->
-        <div class="card proxima-sesion text-white mb-4">
+<!-- Material de Tutoría -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-folder me-2"></i>Material de Tutoría</h4>
+            </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
-                        <h4><i class="fas fa-bell me-2"></i>Próxima Sesión</h4>
-                        <h5>Matemáticas Avanzadas - Álgebra Lineal</h5>
-                        <p class="mb-1"><i class="fas fa-calendar me-2"></i>Viernes, 15 de Diciembre</p>
-                        <p class="mb-0"><i class="fas fa-clock me-2"></i>10:00 AM - 11:30 AM</p>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-pdf fa-2x text-danger mb-2"></i>
+                                <h6>Guía de Proyecto</h6>
+                                <small class="text-muted">PDF - 2.3 MB</small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4 text-end">
-                        <button class="btn btn-light btn-lg mt-3" onclick="mostrarDetallesSesion('Matemáticas Avanzadas - Álgebra Lineal', 'Viernes, 15 de Diciembre - 10:00 AM')">
-                            <i class="fas fa-info-circle me-2"></i>Ver Detalles
-                        </button>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-word fa-2x text-primary mb-2"></i>
+                                <h6>Formato de Reporte</h6>
+                                <small class="text-muted">DOCX - 1.1 MB</small>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Lista de Tutorías -->
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="card tutoria-card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Matemáticas Básicas</h5>
-                        <p class="card-text"><i class="fas fa-user me-2"></i><strong>Tutor:</strong> Prof. Ana García</p>
-                        <p class="card-text"><i class="fas fa-clock me-2"></i><strong>Duración:</strong> 1.5 horas</p>
-                        <p class="card-text"><i class="fas fa-calendar me-2"></i><strong>Próxima:</strong> Lunes, 18 Dic</p>
-                        <button class="btn btn-primary" onclick="mostrarDetallesSesion('Matemáticas Básicas', 'Lunes, 18 de Diciembre - 2:00 PM')">
-                            <i class="fas fa-eye me-1"></i> Ver Detalles
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="card tutoria-card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Física General</h5>
-                        <p class="card-text"><i class="fas fa-user me-2"></i><strong>Tutor:</strong> Prof. Carlos López</p>
-                        <p class="card-text"><i class="fas fa-clock me-2"></i><strong>Duración:</strong> 2 horas</p>
-                        <p class="card-text"><i class="fas fa-calendar me-2"></i><strong>Próxima:</strong> Miércoles, 20 Dic</p>
-                        <button class="btn btn-primary" onclick="mostrarDetallesSesion('Física General', 'Miércoles, 20 de Diciembre - 4:00 PM')">
-                            <i class="fas fa-eye me-1"></i> Ver Detalles
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="card tutoria-card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Programación Web</h5>
-                        <p class="card-text"><i class="fas fa-user me-2"></i><strong>Tutor:</strong> Prof. María Torres</p>
-                        <p class="card-text"><i class="fas fa-clock me-2"></i><strong>Duración:</strong> 2 horas</p>
-                        <p class="card-text"><i class="fas fa-calendar me-2"></i><strong>Próxima:</strong> Viernes, 22 Dic</p>
-                        <button class="btn btn-primary" onclick="mostrarDetallesSesion('Programación Web', 'Viernes, 22 de Diciembre - 3:00 PM')">
-                            <i class="fas fa-eye me-1"></i> Ver Detalles
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="card tutoria-card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Inglés Técnico</h5>
-                        <p class="card-text"><i class="fas fa-user me-2"></i><strong>Tutor:</strong> Prof. Robert Smith</p>
-                        <p class="card-text"><i class="fas fa-clock me-2"></i><strong>Duración:</strong> 1 hora</p>
-                        <p class="card-text"><i class="fas fa-calendar me-2"></i><strong>Próxima:</strong> Martes, 19 Dic</p>
-                        <button class="btn btn-primary" onclick="mostrarDetallesSesion('Inglés Técnico', 'Martes, 19 de Diciembre - 11:00 AM')">
-                            <i class="fas fa-eye me-1"></i> Ver Detalles
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Botones de acción -->
-        <div class="text-center mt-4">
-            <button class="btn btn-success me-2" onclick="mostrarNotificacion('success', 'Tutoría agendada correctamente')">
-                <i class="fas fa-plus me-1"></i> Agendar Nueva Tutoría
-            </button>
-            <button class="btn btn-info me-2" onclick="mostrarNotificacion('info', 'Historial de tutorías cargado')">
-                <i class="fas fa-history me-1"></i> Ver Historial
-            </button>
-            <button class="btn btn-warning" onclick="mostrarNotificacion('error', 'Esta función estará disponible pronto')">
-                <i class="fas fa-download me-1"></i> Exportar Reporte
-            </button>
-        </div>
-    </div>
-
-    <!-- Modal para Detalles de Tutoría -->
-    <div class="modal fade" id="modalTutoria" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTutoriaTitle"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="modalTutoriaBody"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="mostrarNotificacion('success', 'Te has unido a la tutoría exitosamente')">
-                        <i class="fas fa-video me-1"></i> Unirse a Sesión
-                    </button>
+                    <!-- Más materiales -->
                 </div>
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Función para mostrar detalles de sesión
-            window.mostrarDetallesSesion = function(tema, fecha) {
-                let modalTitle = document.getElementById('modalTutoriaTitle');
-                let modalBody = document.getElementById('modalTutoriaBody');
-                
-                modalTitle.innerHTML = `<i class="fas fa-calendar-alt me-2"></i> ${tema}`;
-                modalBody.innerHTML = `
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong><i class="fas fa-book me-2"></i>Tema:</strong> ${tema}</p>
-                            <p><strong><i class="fas fa-clock me-2"></i>Fecha:</strong> ${fecha}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong><i class="fas fa-user me-2"></i>Tutor:</strong> Prof. Especializado</p>
-                            <p><strong><i class="fas fa-map-marker-alt me-2"></i>Lugar:</strong> Aula Virtual</p>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <h6><i class="fas fa-list me-2"></i>Contenido a tratar:</h6>
-                        <ul>
-                            <li>Repaso de conceptos principales</li>
-                            <li>Ejercicios prácticos</li>
-                            <li>Resolución de dudas específicas</li>
-                            <li>Preparación para exámenes</li>
-                        </ul>
-                    </div>
-                    <div class="alert alert-info mt-3">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>Recordatorio:</strong> Conéctate 5 minutos antes con tu material listo.
-                    </div>
-                `;
-                
-                let modal = new bootstrap.Modal(document.getElementById('modalTutoria'));
-                modal.show();
-            };
-
-            // Función para mostrar notificaciones
-            window.mostrarNotificacion = function(tipo, mensaje) {
-                const toast = document.createElement('div');
-                toast.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
-                toast.style.top = '20px';
-                toast.style.right = '20px';
-                toast.style.zIndex = '1060';
-                
-                let icono = '';
-                if (tipo === 'success') {
-                    icono = '<i class="fas fa-check-circle me-2"></i>';
-                } else if (tipo === 'error') {
-                    icono = '<i class="fas fa-exclamation-triangle me-2"></i>';
-                } else {
-                    icono = '<i class="fas fa-info-circle me-2"></i>';
-                }
-
-                toast.innerHTML = `
-                    ${icono} ${mensaje}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
-
-                document.body.appendChild(toast);
-
-                // Auto-remover después de 5 segundos
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 5000);
-            };
-
-            // Animación de contadores en estadísticas
-            function animateCounter(element, target) {
-                let current = 0;
-                const increment = target / 50;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    element.textContent = Math.round(current);
-                }, 30);
-            }
-
-            // Inicializar contadores cuando sean visibles
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const counterElements = entry.target.querySelectorAll('[data-counter]');
-                        counterElements.forEach(element => {
-                            const target = parseInt(element.getAttribute('data-counter'));
-                            animateCounter(element, target);
-                        });
-                    }
-                });
-            });
-
-            // Observar la sección de estadísticas
-            const statsSection = document.getElementById('statsSection');
-            if (statsSection) {
-                observer.observe(statsSection);
-            }
-        });
-    </script>
-</body>
-</html>

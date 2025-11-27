@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Editar Perfil</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control" name="nombre_completo" 
+                                   value="{{ alumno.nombre_completo }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">CURP</label>
+                            <input type="text" class="form-control" name="curp" 
+                                   value="{{ alumno.curp }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Número de control</label>
+                            <input type="text" class="form-control" name="numero_control" 
+                                   value="{{ alumno.numero_control }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Especialidad</label>
+                            <select class="form-select" name="especialidad" required>
+                                <option value="Programación" {% if alumno.especialidad == "Programación" %}selected{% endif %}>Programación</option>
+                                <option value="Administración" {% if alumno.especialidad == "Administración" %}selected{% endif %}>Administración</option>
+                                <option value="Contabilidad" {% if alumno.especialidad == "Contabilidad" %}selected{% endif %}>Contabilidad</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Semestre</label>
+                            <select class="form-select" name="semestre" required>
+                                {% for i in range(1, 7) %}
+                                <option value="{{ i }}" {% if alumno.semestre == i|string %}selected{% endif %}>{{ i }}° Semestre</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Turno</label>
+                            <select class="form-select" name="turno" required>
+                                <option value="Matutino" {% if alumno.turno == "Matutino" %}selected{% endif %}>Matutino</option>
+                                <option value="Vespertino" {% if alumno.turno == "Vespertino" %}selected{% endif %}>Vespertino</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('perfil') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

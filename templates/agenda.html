@@ -6,36 +6,19 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0"><i class="fas fa-calendar me-2"></i>Agenda Escolar</h4>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarEvento">
-                    <i class="fas fa-plus me-1"></i>Agregar Evento
-                </button>
+                <span class="badge bg-primary">Octubre 2025</span>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <!-- Calendario y Formulario -->
-                    <div class="col-md-5">
-                        <!-- Calendario Mini -->
-                        <div class="card mb-4">
+                    <!-- Calendario -->
+                    <div class="col-md-4">
+                        <div class="card">
                             <div class="card-body">
                                 <div id="calendar-mini" class="text-center">
-                                    <h5 class="text-primary">Octubre 2025</h5>
-                                    <div class="calendar-grid mb-3">
-                                        <div class="calendar-header">Lun</div>
-                                        <div class="calendar-header">Mar</div>
-                                        <div class="calendar-header">Mié</div>
-                                        <div class="calendar-header">Jue</div>
-                                        <div class="calendar-header">Vie</div>
-                                        <div class="calendar-header">Sáb</div>
-                                        <div class="calendar-header">Dom</div>
-                                        
-                                        <!-- Días del mes -->
+                                    <h5>Octubre 2025</h5>
+                                    <div class="calendar-grid">
                                         {% for day in range(1, 32) %}
-                                        <div class="calendar-day {% if day == 18 %}current-day{% endif %} 
-                                            {% for evento in eventos %}
-                                                {% if evento.fecha and day|string in evento.fecha %}
-                                                    has-event
-                                                {% endif %}
-                                            {% endfor %}">
+                                        <div class="calendar-day {% if day == 18 %}current-day{% endif %}">
                                             {{ day }}
                                         </div>
                                         {% endfor %}
@@ -43,163 +26,41 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Formulario Rápido para Agregar Evento -->
-                        <div class="card">
-                            <div class="card-header bg-success text-white">
-                                <h6 class="mb-0"><i class="fas fa-plus-circle me-1"></i>Nuevo Evento</h6>
-                            </div>
-                            <div class="card-body">
-                                <form method="POST" action="{{ url_for('agregar_evento') }}">
-                                    <div class="mb-3">
-                                        <label class="form-label">Título del Evento *</label>
-                                        <input type="text" class="form-control" name="titulo" 
-                                               placeholder="Ej: Examen de Matemáticas" required>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Descripción</label>
-                                        <textarea class="form-control" name="descripcion" 
-                                                  placeholder="Descripción del evento..." rows="2"></textarea>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Fecha *</label>
-                                            <input type="date" class="form-control" name="fecha" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Tipo</label>
-                                            <select class="form-select" name="tipo">
-                                                <option value="academico">Académico</option>
-                                                <option value="personal">Personal</option>
-                                                <option value="tarea">Tarea</option>
-                                                <option value="examen">Examen</option>
-                                                <option value="reunion">Reunión</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Hora Inicio</label>
-                                            <input type="time" class="form-control" name="hora_inicio">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Hora Fin</label>
-                                            <input type="time" class="form-control" name="hora_fin">
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-success w-100">
-                                        <i class="fas fa-save me-1"></i>Guardar Evento
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
                     </div>
                     
-                    <!-- Eventos y Lista -->
-                    <div class="col-md-7">
-                        <!-- Eventos para Hoy -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-calendar-day me-2"></i>Eventos para Hoy
-                                    <span class="badge bg-light text-primary ms-2">{{ eventos_hoy|length }}</span>
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                {% if eventos_hoy %}
-                                    {% for evento in eventos_hoy %}
-                                    <div class="agenda-event mb-3 p-3 border rounded">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-primary mb-1">{{ evento.titulo }}</h6>
-                                                <p class="mb-1 text-muted small">
-                                                    <i class="fas fa-clock me-1"></i>
-                                                    {% if evento.hora_inicio and evento.hora_fin %}
-                                                        {{ evento.hora_inicio }} - {{ evento.hora_fin }}
-                                                    {% else %}
-                                                        Horario por definir
-                                                    {% endif %}
-                                                </p>
-                                                {% if evento.descripcion %}
-                                                <p class="mb-2 small">{{ evento.descripcion }}</p>
-                                                {% endif %}
-                                                <span class="badge bg-{% if evento.tipo == 'academico' %}primary{% elif evento.tipo == 'examen' %}danger{% elif evento.tipo == 'tarea' %}warning{% else %}secondary{% endif %}">
-                                                    {{ evento.tipo|title }}
-                                                </span>
-                                            </div>
-                                            <div class="ms-3">
-                                                <form method="POST" action="{{ url_for('eliminar_evento', evento_id=evento._id) }}" 
-                                                      onsubmit="return confirm('¿Estás seguro de eliminar este evento?')">
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <div class="text-center text-muted py-3">
-                                        <i class="fas fa-calendar-times fa-2x mb-2"></i>
-                                        <p>No hay eventos para hoy</p>
-                                    </div>
-                                {% endif %}
-                            </div>
+                    <!-- Eventos del Día -->
+                    <div class="col-md-8">
+                        <h5>Eventos para Hoy</h5>
+                        {% for evento in eventos %}
+                        <div class="agenda-event">
+                            <h6 class="text-primary">{{ evento.descripcion }}</h6>
+                            <p class="text-muted mb-1">
+                                <i class="fas fa-clock me-1"></i>{{ evento.hora }}
+                            </p>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>{{ evento.fecha }}
+                            </small>
                         </div>
+                        {% endfor %}
                         
                         <!-- Próximos Eventos -->
-                        <div class="card">
-                            <div class="card-header bg-success text-white">
-                                <h5 class="mb-0">
-                                    <i class="fas fa-calendar-week me-2"></i>Próximos Eventos
-                                    <span class="badge bg-light text-success ms-2">{{ eventos_proximos|length }}</span>
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                {% if eventos_proximos %}
-                                    <div class="list-group">
-                                        {% for evento in eventos_proximos %}
-                                        <div class="list-group-item">
-                                            <div class="d-flex w-100 justify-content-between align-items-start">
-                                                <div class="flex-grow-1">
-                                                    <h6 class="mb-1">{{ evento.titulo }}</h6>
-                                                    <p class="mb-1 small text-muted">
-                                                        <i class="fas fa-calendar me-1"></i>
-                                                        {{ evento.fecha }}
-                                                        {% if evento.hora_inicio %}
-                                                        • <i class="fas fa-clock me-1"></i>{{ evento.hora_inicio }}
-                                                        {% endif %}
-                                                    </p>
-                                                    {% if evento.descripcion %}
-                                                    <p class="mb-1 small">{{ evento.descripcion }}</p>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="ms-3">
-                                                    <span class="badge bg-{% if evento.tipo == 'academico' %}primary{% elif evento.tipo == 'examen' %}danger{% elif evento.tipo == 'tarea' %}warning{% else %}secondary{% endif %} me-1">
-                                                        {{ evento.tipo|title }}
-                                                    </span>
-                                                    <form method="POST" action="{{ url_for('eliminar_evento', evento_id=evento._id) }}" 
-                                                          onsubmit="return confirm('¿Estás seguro de eliminar este evento?')">
-                                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
+                        <div class="mt-4">
+                            <h5>Próximos Eventos</h5>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Examen de Matemáticas</h6>
+                                        <small class="text-muted">20 OCT</small>
                                     </div>
-                                {% else %}
-                                    <div class="text-center text-muted py-3">
-                                        <i class="fas fa-calendar-plus fa-2x mb-2"></i>
-                                        <p>No hay próximos eventos</p>
-                                        <small>Agrega eventos nuevos usando el formulario</small>
+                                    <p class="mb-1">Unidad 3 - Álgebra</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Entrega Proyecto Programación</h6>
+                                        <small class="text-muted">25 OCT</small>
                                     </div>
-                                {% endif %}
+                                    <p class="mb-1">Sistema de gestión escolar</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -208,177 +69,5 @@
         </div>
     </div>
 </div>
-
-<!-- Modal para Agregar Evento (alternativo) -->
-<div class="modal fade" id="modalAgregarEvento" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Agregar Nuevo Evento</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="{{ url_for('agregar_evento') }}" id="formEventoModal">
-                    <div class="mb-3">
-                        <label class="form-label">Título del Evento *</label>
-                        <input type="text" class="form-control" name="titulo" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Descripción</label>
-                        <textarea class="form-control" name="descripcion" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Fecha *</label>
-                            <input type="date" class="form-control" name="fecha" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tipo</label>
-                            <select class="form-select" name="tipo">
-                                <option value="academico">Académico</option>
-                                <option value="examen">Examen</option>
-                                <option value="tarea">Tarea</option>
-                                <option value="personal">Personal</option>
-                                <option value="reunion">Reunión</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Hora Inicio</label>
-                            <input type="time" class="form-control" name="hora_inicio">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Hora Fin</label>
-                            <input type="time" class="form-control" name="hora_fin">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formEventoModal" class="btn btn-primary">
-                    <i class="fas fa-save me-1"></i>Guardar Evento
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
 
-{% block extra_css %}
-<style>
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-top: 10px;
-}
-
-.calendar-header {
-    font-weight: bold;
-    text-align: center;
-    padding: 5px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-    font-size: 0.8rem;
-}
-
-.calendar-day {
-    padding: 8px;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.calendar-day:hover {
-    background-color: #e9ecef;
-    transform: scale(1.1);
-}
-
-.current-day {
-    background-color: #3498db;
-    color: white;
-    font-weight: bold;
-}
-
-.has-event {
-    background-color: #e74c3c;
-    color: white;
-    position: relative;
-}
-
-.has-event::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-.agenda-event {
-    border-left: 4px solid #3498db;
-    transition: all 0.3s ease;
-}
-
-.agenda-event:hover {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transform: translateX(5px);
-}
-
-/* Colores por tipo de evento */
-.badge.bg-primary { background-color: #3498db !important; }
-.badge.bg-danger { background-color: #e74c3c !important; }
-.badge.bg-warning { background-color: #f39c12 !important; }
-.badge.bg-success { background-color: #27ae60 !important; }
-.badge.bg-secondary { background-color: #95a5a6 !important; }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .calendar-day {
-        padding: 5px;
-        font-size: 0.8rem;
-    }
-    
-    .agenda-event {
-        margin-bottom: 15px;
-    }
-}
-</style>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Establecer fecha mínima como hoy en los formularios de fecha
-    const today = new Date().toISOString().split('T')[0];
-    document.querySelectorAll('input[type="date"]').forEach(input => {
-        input.min = today;
-    });
-    
-    // Efecto visual al pasar mouse sobre eventos
-    const agendaEvents = document.querySelectorAll('.agenda-event');
-    agendaEvents.forEach(event => {
-        event.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateX(5px)';
-        });
-        event.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateX(0)';
-        });
-    });
-});
-</script>
-{% endblock %}
