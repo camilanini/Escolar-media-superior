@@ -8,37 +8,28 @@
                 <h4 class="mb-0"><i class="fas fa-cog me-2"></i>Ajustes</h4>
             </div>
             <div class="card-body">
-                <form id="ajustesForm" method="POST" action="{{ url_for('ajustes') }}">
+                <form method="POST">
+                    <!-- Notificaciones -->
                     <div class="mb-4">
                         <h5 class="text-primary mb-3">
                             <i class="fas fa-bell me-2"></i>Notificaciones
                         </h5>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="notifAnuncios" name="notif_anuncios" 
-                                   {% if ajustes and ajustes.notif_anuncios %}checked{% endif %}>
+                            <input class="form-check-input" type="checkbox" id="notifAnuncios" checked>
                             <label class="form-check-label" for="notifAnuncios">
                                 Notificaciones de anuncios importantes
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="notifTareas" name="notif_tareas"
-                                   {% if ajustes and ajustes.notif_tareas %}checked{% endif %}>
+                            <input class="form-check-input" type="checkbox" id="notifTareas" checked>
                             <label class="form-check-label" for="notifTareas">
                                 Recordatorios de tareas
                             </label>
                         </div>
-                        <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="notifTutoria" name="notif_tutoria"
-                                   {% if ajustes and ajustes.notif_tutoria %}checked{% endif %}>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="notifTutoria">
                             <label class="form-check-label" for="notifTutoria">
                                 Recordatorios de tutoría
-                            </label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="notifEmail" name="notif_email"
-                                   {% if ajustes and ajustes.notif_email %}checked{% endif %}>
-                            <label class="form-check-label" for="notifEmail">
-                                Notificaciones por correo
                             </label>
                         </div>
                     </div>
@@ -50,26 +41,11 @@
                         </h5>
                         <div class="mb-3">
                             <label class="form-label">Tema</label>
-                            <select class="form-select" id="tema" name="tema">
-                                <option value="claro" {% if ajustes and ajustes.tema == 'claro' %}selected{% endif %}>Claro</option>
-                                <option value="oscuro" {% if ajustes and ajustes.tema == 'oscuro' %}selected{% endif %}>Oscuro</option>
-                                <option value="auto" {% if ajustes and ajustes.tema == 'auto' %}selected{% endif %}>Automático</option>
+                            <select class="form-select" id="tema">
+                                <option value="claro">Claro</option>
+                                <option value="oscuro">Oscuro</option>
+                                <option value="auto">Automático</option>
                             </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tamaño de fuente</label>
-                            <select class="form-select" id="fontSize" name="font_size">
-                                <option value="small" {% if ajustes and ajustes.font_size == 'small' %}selected{% endif %}>Pequeña</option>
-                                <option value="medium" {% if not ajustes or ajustes.font_size == 'medium' %}selected{% endif %}>Mediana</option>
-                                <option value="large" {% if ajustes and ajustes.font_size == 'large' %}selected{% endif %}>Grande</option>
-                            </select>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="animaciones" name="animaciones"
-                                   {% if not ajustes or ajustes.animaciones %}checked{% endif %}>
-                            <label class="form-check-label" for="animaciones">
-                                Mostrar animaciones
-                            </label>
                         </div>
                     </div>
 
@@ -79,24 +55,9 @@
                             <i class="fas fa-shield-alt me-2"></i>Privacidad
                         </h5>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="perfilPublico" name="perfil_publico"
-                                   {% if not ajustes or ajustes.perfil_publico %}checked{% endif %}>
+                            <input class="form-check-input" type="checkbox" id="perfilPublico">
                             <label class="form-check-label" for="perfilPublico">
                                 Perfil visible para otros estudiantes
-                            </label>
-                        </div>
-                        <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="mostrarEmail" name="mostrar_email"
-                                   {% if ajustes and ajustes.mostrar_email %}checked{% endif %}>
-                            <label class="form-check-label" for="mostrarEmail">
-                                Mostrar mi correo en el perfil
-                            </label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="mostrarCalificaciones" name="mostrar_calificaciones"
-                                   {% if ajustes and ajustes.mostrar_calificaciones %}checked{% endif %}>
-                            <label class="form-check-label" for="mostrarCalificaciones">
-                                Mostrar mis calificaciones públicas
                             </label>
                         </div>
                     </div>
@@ -106,353 +67,22 @@
                         <h5 class="text-primary mb-3">
                             <i class="fas fa-database me-2"></i>Datos
                         </h5>
-                        <div class="mb-3">
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Tus datos se guardan automáticamente en cada cambio.
-                            </div>
-                        </div>
                         <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-outline-primary" onclick="exportarDatos()">
-                                <i class="fas fa-download me-2"></i>Exportar mis datos (JSON)
+                            <button type="button" class="btn btn-outline-primary">
+                                <i class="fas fa-download me-2"></i>Exportar mis datos
                             </button>
-                            <button type="button" class="btn btn-outline-success" onclick="backupDatos()">
-                                <i class="fas fa-save me-2"></i>Crear backup local
-                            </button>
-                            <button type="button" class="btn btn-outline-warning" onclick="restaurarDatos()">
-                                <i class="fas fa-undo me-2"></i>Restaurar datos del backup
-                            </button>
-                            <button type="button" class="btn btn-outline-danger" onclick="eliminarCuenta()">
-                                <i class="fas fa-trash me-2"></i>Eliminar cuenta permanentemente
+                            <button type="button" class="btn btn-outline-danger">
+                                <i class="fas fa-trash me-2"></i>Eliminar cuenta
                             </button>
                         </div>
                     </div>
 
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-2"></i>Guardar Ajustes
-                        </button>
+                        <button type="submit" class="btn btn-primary">Guardar Ajustes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-// Cargar ajustes guardados al iniciar
-document.addEventListener('DOMContentLoaded', function() {
-    // Aplicar ajustes de apariencia inmediatamente
-    aplicarAjustesApariencia();
-    
-    // Configurar eventos para cambios en tiempo real
-    document.getElementById('tema').addEventListener('change', function() {
-        aplicarTema(this.value);
-        guardarAjustesLocal();
-    });
-    
-    document.getElementById('fontSize').addEventListener('change', function() {
-        aplicarTamañoFuente(this.value);
-        guardarAjustesLocal();
-    });
-    
-    // Guardar cambios automáticamente
-    document.querySelectorAll('#ajustesForm input[type="checkbox"]').forEach(element => {
-        element.addEventListener('change', guardarAjustesLocal);
-    });
-});
-
-function aplicarAjustesApariencia() {
-    const tema = document.getElementById('tema').value;
-    const fontSize = document.getElementById('fontSize').value;
-    
-    aplicarTema(tema);
-    aplicarTamañoFuente(fontSize);
-}
-
-function aplicarTema(tema) {
-    // Remover clases de tema existentes
-    document.body.classList.remove('tema-oscuro', 'tema-claro');
-    
-    if (tema === 'oscuro') {
-        document.body.classList.add('tema-oscuro');
-    } else if (tema === 'auto') {
-        // Detectar preferencia del sistema
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('tema-oscuro');
-        } else {
-            document.body.classList.add('tema-claro');
-        }
-    } else {
-        document.body.classList.add('tema-claro');
-    }
-}
-
-function aplicarTamañoFuente(tamaño) {
-    document.documentElement.style.fontSize = 
-        tamaño === 'small' ? '14px' : 
-        tamaño === 'large' ? '18px' : '16px';
-}
-
-function guardarAjustesLocal() {
-    // Guardar en localStorage para persistencia entre sesiones
-    const ajustes = {
-        tema: document.getElementById('tema').value,
-        font_size: document.getElementById('fontSize').value,
-        animaciones: document.getElementById('animaciones').checked
-    };
-    
-    localStorage.setItem('ajustesApariencia', JSON.stringify(ajustes));
-}
-
-function exportarDatos() {
-    // Usar la API de Flask para exportar todos los datos
-    fetch('/api/ajustes/exportar')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                const blob = new Blob([JSON.stringify(data.datos, null, 2)], {type: 'application/json'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `datos_estudiante_${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                mostrarNotificacion('Datos exportados exitosamente', 'success');
-            } else {
-                mostrarNotificacion('Error al exportar datos: ' + (data.error || 'Desconocido'), 'danger');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            mostrarNotificacion('Error de conexión al servidor', 'danger');
-        });
-}
-
-function backupDatos() {
-    // Crear backup local de datos del navegador
-    const backup = {
-        fecha: new Date().toISOString(),
-        datos: {
-            eventos: JSON.parse(localStorage.getItem('eventosAgenda')) || [],
-            tareasTutoria: JSON.parse(localStorage.getItem('tareasTutoria')) || [],
-            notasTutoria: localStorage.getItem('notasTutoria') || '',
-            ajustesApariencia: JSON.parse(localStorage.getItem('ajustesApariencia')) || {}
-        }
-    };
-    
-    localStorage.setItem('backupDatosLocal', JSON.stringify(backup));
-    mostrarNotificacion('Backup local creado exitosamente', 'success');
-}
-
-function restaurarDatos() {
-    if (confirm('⚠️ ¿Estás seguro de restaurar los datos del backup local? Esto sobrescribirá tus datos actuales en este navegador.')) {
-        const backup = JSON.parse(localStorage.getItem('backupDatosLocal'));
-        if (backup && backup.datos) {
-            // Restaurar datos locales
-            if (backup.datos.eventos) {
-                localStorage.setItem('eventosAgenda', JSON.stringify(backup.datos.eventos));
-            }
-            if (backup.datos.tareasTutoria) {
-                localStorage.setItem('tareasTutoria', JSON.stringify(backup.datos.tareasTutoria));
-            }
-            if (backup.datos.notasTutoria) {
-                localStorage.setItem('notasTutoria', backup.datos.notasTutoria);
-            }
-            if (backup.datos.ajustesApariencia) {
-                localStorage.setItem('ajustesApariencia', JSON.stringify(backup.datos.ajustesApariencia));
-                
-                // Aplicar ajustes restaurados
-                if (backup.datos.ajustesApariencia.tema) {
-                    document.getElementById('tema').value = backup.datos.ajustesApariencia.tema;
-                    aplicarTema(backup.datos.ajustesApariencia.tema);
-                }
-                if (backup.datos.ajustesApariencia.font_size) {
-                    document.getElementById('fontSize').value = backup.datos.ajustesApariencia.font_size;
-                    aplicarTamañoFuente(backup.datos.ajustesApariencia.font_size);
-                }
-            }
-            
-            mostrarNotificacion('Datos restaurados exitosamente. Recarga la página para ver los cambios completos.', 'success');
-        } else {
-            mostrarNotificacion('No hay backup disponible', 'warning');
-        }
-    }
-}
-
-function eliminarCuenta() {
-    if (confirm('⚠️ ADVERTENCIA CRÍTICA:\n\nEsta acción eliminará PERMANENTEMENTE tu cuenta y todos tus datos del servidor.\n\n• Tu perfil será eliminado\n• Tus eventos y tareas desaparecerán\n• Tus ajustes se perderán\n• No podrás recuperar la cuenta\n\n¿Estás ABSOLUTAMENTE seguro?')) {
-        if (confirm('⛔ ÚLTIMA ADVERTENCIA:\n\nEsta es tu última oportunidad para cancelar.\n\n¿Confirmas la ELIMINACIÓN PERMANENTE de tu cuenta?')) {
-            fetch('/api/eliminar_cuenta', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Limpiar datos locales
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    
-                    // Redirigir al login
-                    window.location.href = data.redirect || '/login';
-                } else {
-                    mostrarNotificacion('Error al eliminar la cuenta: ' + (data.error || 'Desconocido'), 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                mostrarNotificacion('Error de conexión al servidor', 'danger');
-            });
-        }
-    }
-}
-
-// Función para mostrar notificaciones
-function mostrarNotificacion(mensaje, tipo = 'success') {
-    const alerta = document.createElement('div');
-    alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
-    alerta.style.cssText = `
-        top: 20px;
-        right: 20px;
-        z-index: 1050;
-        max-width: 400px;
-        animation: slideIn 0.3s ease-out;
-    `;
-    alerta.innerHTML = `
-        ${mensaje}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    
-    document.body.appendChild(alerta);
-    
-    setTimeout(() => {
-        if (alerta.parentNode) {
-            const bsAlert = new bootstrap.Alert(alerta);
-            bsAlert.close();
-        }
-    }, 5000);
-}
-</script>
-
-<style>
-.tema-oscuro {
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
-}
-
-.tema-oscuro .card {
-    background-color: #2d2d2d !important;
-    color: #ffffff !important;
-    border-color: #404040 !important;
-}
-
-.tema-oscuro .card-header {
-    background-color: #3d3d3d !important;
-    border-bottom-color: #404040 !important;
-}
-
-.tema-oscuro .form-control,
-.tema-oscuro .form-select {
-    background-color: #3d3d3d !important;
-    color: #ffffff !important;
-    border-color: #505050 !important;
-}
-
-.tema-oscuro .form-control:focus,
-.tema-oscuro .form-select:focus {
-    background-color: #4d4d4d !important;
-    color: #ffffff !important;
-    border-color: #007bff !important;
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25) !important;
-}
-
-.tema-oscuro .form-check-input {
-    background-color: #3d3d3d !important;
-    border-color: #505050 !important;
-}
-
-.tema-oscuro .form-check-input:checked {
-    background-color: #007bff !important;
-    border-color: #007bff !important;
-}
-
-.tema-oscuro .alert {
-    background-color: #3d3d3d !important;
-    color: #ffffff !important;
-    border-color: #404040 !important;
-}
-
-.tema-oscuro .btn-outline-primary {
-    color: #007bff !important;
-    border-color: #007bff !important;
-}
-
-.tema-oscuro .btn-outline-primary:hover {
-    background-color: #007bff !important;
-    color: #ffffff !important;
-}
-
-.tema-oscuro .btn-outline-danger {
-    color: #dc3545 !important;
-    border-color: #dc3545 !important;
-}
-
-.tema-oscuro .btn-outline-danger:hover {
-    background-color: #dc3545 !important;
-    color: #ffffff !important;
-}
-
-.tema-oscuro .text-primary {
-    color: #007bff !important;
-}
-
-.tema-oscuro .text-muted {
-    color: #aaaaaa !important;
-}
-
-/* Animación para notificaciones */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* Responsividad para ajustes */
-@media (max-width: 768px) {
-    .btn-group {
-        flex-wrap: wrap;
-    }
-    
-    .btn-group .btn {
-        margin-bottom: 5px;
-    }
-}
-.calendar-navigation button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-.calendar-navigation button:disabled:hover {
-    background-color: #fff;
-    border-color: #dee2e6;
-    transform: none;
-}
-</style>
 {% endblock %}

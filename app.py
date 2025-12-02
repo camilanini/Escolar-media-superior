@@ -123,16 +123,35 @@ def tutoria():
                          horarios=HORARIOS_TUTORIA,
                          historial=historial_tutoria,
                          alumno=ALUMNO_DATA)
-
+# En editar_perfil, agrega el grupo al formulario o quita la línea:
 @app.route("/editar_perfil", methods=["GET", "POST"])
 def editar_perfil():
-    """Editar información del perfil"""
+    global ALUMNO_DATA
+    
     if request.method == "POST":
-        # Aquí iría la lógica para actualizar en MongoDB
+        ALUMNO_DATA = {
+            "nombre_completo": request.form.get("nombre_completo"),
+            "curp": request.form.get("curp"),
+            "numero_control": request.form.get("numero_control"),
+            "especialidad": request.form.get("especialidad"),
+            "semestre": request.form.get("semestre"),
+            "grupo": request.form.get("grupo", ALUMNO_DATA["grupo"]),  # Agregar grupo al form
+            "turno": request.form.get("turno")
+        }
         flash("Perfil actualizado correctamente", "success")
         return redirect(url_for("perfil"))
     
     return render_template("editar_perfil.html", alumno=ALUMNO_DATA)
+
+@app.route("/ajustes", methods=["GET", "POST"])
+def ajustes():
+    """Página de ajustes de la aplicación"""
+    if request.method == "POST":
+        # Aquí procesarías los ajustes guardados
+        flash("Ajustes guardados correctamente", "success")
+        return redirect(url_for("ajustes"))
+    
+    return render_template("ajustes.html", alumno=ALUMNO_DATA)
 
 if __name__ == "_main_":
     app.run(debug=True)

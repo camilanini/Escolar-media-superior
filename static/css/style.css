@@ -4,6 +4,7 @@
     --accent-color: #e74c3c;
     --success-color: #27ae60;
     --warning-color: #f39c12;
+    --info-color: #17a2b8;
 }
 
 body {
@@ -52,6 +53,7 @@ body {
     padding: 15px 20px;
 }
 
+/* Badges para prioridades */
 .badge-alta {
     background-color: var(--accent-color);
 }
@@ -64,17 +66,66 @@ body {
     background-color: var(--success-color);
 }
 
+/* Estilos para la agenda */
 .agenda-event {
     border-left: 4px solid var(--primary-color);
     padding-left: 15px;
     margin-bottom: 15px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
 }
 
+.agenda-event:hover {
+    background-color: #e9ecef;
+    transform: translateX(5px);
+}
+
+/* Calendario */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.calendar-day {
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.calendar-day:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.current-day {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.selected-day {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+/* Tarjetas de materias */
 .materia-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    transition: all 0.3s ease;
 }
 
+.materia-card:hover {
+    transform: scale(1.05);
+}
+
+/* Perfil */
 .user-avatar {
     width: 120px;
     height: 120px;
@@ -86,6 +137,11 @@ body {
 .stats-card {
     text-align: center;
     padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-3px);
 }
 
 .stats-number {
@@ -94,14 +150,133 @@ body {
     color: var(--primary-color);
 }
 
+/* Tablas */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+/* Badges generales */
+.badge {
+    font-size: 0.7em;
+}
+
+/* Modal personalizado */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Estados de eventos por tipo */
+.evento-clase {
+    border-left-color: var(--primary-color);
+}
+
+.evento-examen {
+    border-left-color: var(--accent-color);
+}
+
+.evento-tarea {
+    border-left-color: var(--warning-color);
+}
+
+.evento-tutoria {
+    border-left-color: var(--info-color);
+}
+
+.evento-personal {
+    border-left-color: var(--success-color);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .sidebar {
-        min-height: auto;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+        z-index: 1000;
     }
     
     .main-content {
+        margin-bottom: 70px;
         padding: 15px;
+    }
+    
+    .nav.flex-column {
+        flex-direction: row !important;
+        overflow-x: auto;
+    }
+    
+    .nav-link {
+        white-space: nowrap;
+        margin: 0 5px;
+        font-size: 0.9rem;
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+    }
+    
+    .user-avatar {
+        width: 80px;
+        height: 80px;
     }
 }
 
+/* Scroll personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Estados de carga */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Mejoras para botones */
+.btn {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #2980b9);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}

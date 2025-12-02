@@ -60,7 +60,7 @@
                         <p class="mb-1"><strong>Viernes 20 de Octubre</strong></p>
                         <p class="mb-1">1:00 PM - Sala de Tutores</p>
                         <p class="mb-0 text-muted">Tema: Avance de proyectos semestrales</p>
-                        <button class="btn btn-primary btn-sm mt-2">Confirmar Asistencia</button>
+                        <button class="btn btn-primary btn-sm mt-2" onclick="confirmarAsistencia()">Confirmar Asistencia</button>
                     </div>
                 </div>
             </div>
@@ -101,6 +101,17 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
-//Tutoría.html
+<script>
+function confirmarAsistencia() {
+    const boton = event.target;
+    boton.textContent = '✓ Asistencia Confirmada';
+    boton.classList.remove('btn-primary');
+    boton.classList.add('btn-success');
+    boton.disabled = true;
+    
+    // Mostrar mensaje de confirmación
+    alert('¡Asistencia confirmada para la tutoría del Viernes 20 de Octubre!');
+}
+</script>
+{% endblock %}
