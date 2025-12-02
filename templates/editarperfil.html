@@ -48,17 +48,6 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Grupo</label>
-                            <select class="form-select" name="grupo" required>
-                                <option value="A" {% if alumno.grupo == "A" %}selected{% endif %}>Grupo A</option>
-                                <option value="B" {% if alumno.grupo == "B" %}selected{% endif %}>Grupo B</option>
-                                <option value="C" {% if alumno.grupo == "C" %}selected{% endif %}>Grupo C</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
                             <label class="form-label">Turno</label>
                             <select class="form-select" name="turno" required>
                                 <option value="Matutino" {% if alumno.turno == "Matutino" %}selected{% endif %}>Matutino</option>
@@ -77,3 +66,5 @@
     </div>
 </div>
 {% endblock %}
+
+//Editar_perfil.html

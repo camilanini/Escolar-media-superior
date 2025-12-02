@@ -20,4 +20,3 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Media Superior Platform loaded successfully');
 });
 
-//Script.js

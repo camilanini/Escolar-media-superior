@@ -18,22 +18,9 @@
                                     <i class="fas fa-clock me-1"></i>{{ materia.horario }}<br>
                                     <small>{{ materia.profesor }}</small>
                                 </p>
-                                
-                                <!-- Calificación Actual -->
-                                <div class="calificacion-actual mb-2">
-                                    <strong class="text-primary">{{ materia.calificacion|default("--") }}</strong>
-                                    <small class="text-muted">/10</small>
-                                </div>
-                                
-                                <div class="btn-group w-100">
-                                    <button class="btn btn-outline-primary btn-sm" 
-                                            onclick="mostrarCalificaciones('{{ materia.nombre }}')">
-                                        <i class="fas fa-chart-bar me-1"></i>Calificaciones
-                                    </button>
-                                    <button class="btn btn-outline-success btn-sm" 
-                                            onclick="mostrarTareas('{{ materia.nombre }}')">
-                                        <i class="fas fa-tasks me-1"></i>Tareas
-                                    </button>
+                                <div class="btn-group">
+                                    <button class="btn btn-light btn-sm">Calificaciones</button>
+                                    <button class="btn btn-outline-light btn-sm">Tareas</button>
                                 </div>
                             </div>
                         </div>
@@ -41,182 +28,55 @@
                     {% endfor %}
                 </div>
                 
-                <!-- Sección Dinámica para Calificaciones y Tareas -->
-                <div id="detalleMateria" class="mt-4" style="display: none;">
-                    <!-- Aquí se cargarán dinámicamente calificaciones o tareas -->
-                </div>
-                
-                <!-- Horario Semanal (se mantiene igual) -->
+                <!-- Horario Semanal -->
                 <div class="row mt-4">
                     <div class="col-12">
-                        <!-- ... mismo código del horario ... -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-table me-2"></i>Horario Semanal</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Hora</th>
+                                                <th>Lunes</th>
+                                                <th>Martes</th>
+                                                <th>Miércoles</th>
+                                                <th>Jueves</th>
+                                                <th>Viernes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>7:00 - 8:00</td>
+                                                <td>Matemáticas</td>
+                                                <td>Programación</td>
+                                                <td>Historia</td>
+                                                <td>Inglés</td>
+                                                <td>Matemáticas</td>
+                                            </tr>
+                                            <tr>
+                                                <td>8:00 - 9:00</td>
+                                                <td>Programación</td>
+                                                <td>Historia</td>
+                                                <td>Inglés</td>
+                                                <td>Matemáticas</td>
+                                                <td>Programación</td>
+                                            </tr>
+                                            <!-- Más filas según horario -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal para Calificaciones -->
-<div class="modal fade" id="calificacionesModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="calificacionesModalTitle">Calificaciones</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="calificacionesModalBody">
-                <!-- Contenido dinámico -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para Tareas -->
-<div class="modal fade" id="tareasModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="tareasModalTitle">Tareas y Proyectos</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="tareasModalBody">
-                <!-- Contenido dinámico -->
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Datos de ejemplo para calificaciones y tareas
-const materiasDetalle = {
-    "Programación": {
-        calificaciones: [
-            { unidad: "1", calificacion: 8.5, fecha: "15/Sep/2025" },
-            { unidad: "2", calificacion: 9.0, fecha: "05/Oct/2025" },
-            { unidad: "Proyecto", calificacion: 9.5, fecha: "10/Oct/2025" }
-        ],
-        tareas: [
-            { titulo: "Sistema de Gestión", fecha_entrega: "20/Oct/2025", estado: "Pendiente" },
-            { titulo: "API REST", fecha_entrega: "25/Oct/2025", estado: "En Progreso" },
-            { titulo: "Base de Datos", fecha_entrega: "05/Oct/2025", estado: "Entregado" }
-        ]
-    },
-    "Matemáticas": {
-        calificaciones: [
-            { unidad: "1", calificacion: 7.5, fecha: "10/Sep/2025" },
-            { unidad: "2", calificacion: 8.0, fecha: "01/Oct/2025" }
-        ],
-        tareas: [
-            { titulo: "Ecuaciones Diferenciales", fecha_entrega: "18/Oct/2025", estado: "Pendiente" },
-            { titulo: "Cálculo Integral", fecha_entrega: "12/Oct/2025", estado: "Entregado" }
-        ]
-    }
-    // ... más materias
-};
-
-function mostrarCalificaciones(materiaNombre) {
-    const materia = materiasDetalle[materiaNombre];
-    const modalTitle = document.getElementById('calificacionesModalTitle');
-    const modalBody = document.getElementById('calificacionesModalBody');
-    
-    modalTitle.textContent = `Calificaciones - ${materiaNombre}`;
-    
-    if (materia && materia.calificaciones) {
-        modalBody.innerHTML = `
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Unidad/Actividad</th>
-                            <th>Calificación</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${materia.calificaciones.map(cal => `
-                            <tr>
-                                <td>${cal.unidad}</td>
-                                <td><strong>${cal.calificacion}/10</strong></td>
-                                <td>${cal.fecha}</td>
-                                <td><span class="badge bg-success">Calificado</span></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center mt-3">
-                <strong>Promedio: ${calcularPromedio(materia.calificaciones)}/10</strong>
-            </div>
-        `;
-    } else {
-        modalBody.innerHTML = '<p class="text-muted">No hay calificaciones registradas.</p>';
-    }
-    
-    new bootstrap.Modal(document.getElementById('calificacionesModal')).show();
-}
-
-function mostrarTareas(materiaNombre) {
-    const materia = materiasDetalle[materiaNombre];
-    const modalTitle = document.getElementById('tareasModalTitle');
-    const modalBody = document.getElementById('tareasModalBody');
-    
-    modalTitle.textContent = `Tareas y Proyectos - ${materiaNombre}`;
-    
-    if (materia && materia.tareas) {
-        modalBody.innerHTML = `
-            <div class="list-group">
-                ${materia.tareas.map(tarea => `
-                    <div class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">${tarea.titulo}</h6>
-                                <small class="text-muted">Entrega: ${tarea.fecha_entrega}</small>
-                            </div>
-                            <span class="badge ${getBadgeClass(tarea.estado)}">${tarea.estado}</span>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    } else {
-        modalBody.innerHTML = '<p class="text-muted">No hay tareas asignadas.</p>';
-    }
-    
-    new bootstrap.Modal(document.getElementById('tareasModal')).show();
-}
-
-function calcularPromedio(calificaciones) {
-    const suma = calificaciones.reduce((total, cal) => total + cal.calificacion, 0);
-    return (suma / calificaciones.length).toFixed(1);
-}
-
-function getBadgeClass(estado) {
-    switch(estado) {
-        case 'Pendiente': return 'bg-warning';
-        case 'En Progreso': return 'bg-info';
-        case 'Entregado': return 'bg-success';
-        default: return 'bg-secondary';
-    }
-}
-</script>
-
-<style>
-.materia-card {
-    transition: transform 0.2s;
-    height: 100%;
-}
-
-.materia-card:hover {
-    transform: translateY(-5px);
-}
-
-.calificacion-actual {
-    font-size: 1.2em;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #f8f9fa;
-}
-</style>
 {% endblock %}
+
+//Materias.html

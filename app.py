@@ -6,8 +6,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET", "dev-secret")
-
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://paolaco1308_db_user:admin321@mediasuperior.ephlbzn.mongodb.net/mediasuperior")
+
 try:
     client = MongoClient(
         MONGO_URI,
@@ -32,6 +32,7 @@ except Exception as e:
         db = None
         print("No se pudo conectar con MongoDB Atlas:", e)
 
+# Datos de ejemplo (simulando base de datos)
 ALUMNO_DATA = {
     "nombre_completo": "Mark Corona",
     "curp": "CORM950515HDFRNL09",
@@ -133,6 +134,6 @@ def editar_perfil():
     
     return render_template("editar_perfil.html", alumno=ALUMNO_DATA)
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     app.run(debug=True)
 
