@@ -2,88 +2,311 @@
 
 {% block content %}
 <div class="row">
-    <!-- Bienvenida -->
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">¡Bienvenido, {{ alumno.nombre_completo }}! 👋</h3>
-                <p class="card-text">Estudiante de {{ alumno.especialidad }} - {{ alumno.semestre }}° Semestre</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mt-4">
-    <!-- Anuncios Recientes -->
-    <div class="col-lg-6">
-        <div class="card">
             <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Anuncios Recientes</h5>
-            </div>
-            <div class="card-body">
-                {% for anuncio in anuncios %}
-                <div class="alert alert-{% if anuncio.prioridad == 'alta' %}danger{% elif anuncio.prioridad == 'media' %}warning{% else %}info{% endif %}">
-                    <h6 class="alert-heading">{{ anuncio.titulo }}</h6>
-                    <small class="text-muted">{{ anuncio.emisor }} • {{ anuncio.fecha }}</small>
-                </div>
-                {% endfor %}
-                <a href="{{ url_for('anuncios') }}" class="btn btn-outline-primary btn-sm">Ver todos los anuncios</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Horario de Tutoría -->
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Horario de Tutoría</h5>
+                <h4 class="mb-0"><i class="fas fa-user me-2"></i>Mi Perfil</h4>
             </div>
             <div class="card-body">
                 <div class="row">
-                    {% for grupo, hora in horarios_tutoria.items() %}
-                    <div class="col-md-6 mb-2">
-                        <strong>{{ grupo }}:</strong> {{ hora }}
+                    <!-- Avatar y Info Básica -->
+                    <div class="col-md-4 text-center">
+                        <img src="{{ url_for('static', filename='images/avatar.png') }}" 
+                             alt="Avatar" class="user-avatar mb-3">
+                        <h4>{{ alumno.nombre_completo }}</h4>
+                        <p class="text-muted">Estudiante de {{ alumno.especialidad }}</p>
+                        <a href="{{ url_for('editar_perfil') }}" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i>Editar Perfil
+                        </a>
                     </div>
-                    {% endfor %}
+                    
+                    <!-- Información Detallada -->
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary">
+                                            <i class="fas fa-id-card me-2"></i>Información Personal
+                                        </h6>
+                                        <p><strong>Nombre completo:</strong><br>{{ alumno.nombre_completo }}</p>
+                                        <p><strong>CURP:</strong><br>{{ alumno.curp }}</p>
+                                        <p><strong>Número de control:</strong><br>{{ alumno.numero_control }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-success">
+                                            <i class="fas fa-graduation-cap me-2"></i>Información Académica
+                                        </h6>
+                                        <p><strong>Especialidad:</strong><br>{{ alumno.especialidad }}</p>
+                                        <p><strong>Semestre:</strong><br>{{ alumno.semestre }}°</p>
+                                        <p><strong>Grupo:</strong><br>{{ alumno.grupo }}</p>
+                                        <p><strong>Turno:</strong><br>{{ alumno.turno }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a href="{{ url_for('tutoria') }}" class="btn btn-outline-success btn-sm mt-2">Ver detalles de tutoría</a>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Estadísticas Rápidas -->
 <div class="row mt-4">
-    <!-- Accesos Rápidos -->
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">{{ alumno.semestre }}</div>
+                <div class="text-muted">Semestre</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">4</div>
+                <div class="text-muted">Materias</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">85%</div>
+                <div class="text-muted">Asistencia</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="card text-center stats-card">
+            <div class="card-body">
+                <div class="stats-number">8.5</div>
+                <div class="text-muted">Promedio</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Información Adicional -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Próximas Actividades</h6>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <div class="list-group-item border-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small class="text-primary">Hoy</small>
+                            <small class="text-muted">1:00 PM</small>
+                        </div>
+                        <p class="mb-1">Tutoría grupal</p>
+                    </div>
+                    <div class="list-group-item border-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small class="text-primary">Mañana</small>
+                            <small class="text-muted">10:00 AM</small>
+                        </div>
+                        <p class="mb-1">Examen de Programación</p>
+                    </div>
+                    <div class="list-group-item border-0">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small class="text-primary">Viernes</small>
+                            <small class="text-muted">Todo el día</small>
+                        </div>
+                        <p class="mb-1">Entrega de proyecto final</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Rendimiento Académico</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Programación</span>
+                        <span>9.0</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-success" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Matemáticas</span>
+                        <span>8.5</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-info" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Historia</span>
+                        <span>8.0</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-warning" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Inglés</span>
+                        <span>9.5</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-success" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contacto de Emergencia -->
+<div class="row mt-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-rocket me-2"></i>Accesos Rápidos</h5>
+                <h6 class="mb-0"><i class="fas fa-phone-alt me-2"></i>Contacto de Emergencia</h6>
             </div>
             <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-md-2 col-6 mb-3">
-                        <a href="{{ url_for('agenda') }}" class="btn btn-outline-primary btn-lg p-3">
-                            <i class="fas fa-calendar fa-2x mb-2"></i><br>
-                            Agenda
-                        </a>
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-school fa-2x text-primary mb-2"></i>
+                            <h6>Escuela</h6>
+                            <p class="mb-1">(55) 1234-5678</p>
+                            <small class="text-muted">Lunes a Viernes 7:00-19:00</small>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-6 mb-3">
-                        <a href="{{ url_for('materias') }}" class="btn btn-outline-success btn-lg p-3">
-                            <i class="fas fa-book fa-2x mb-2"></i><br>
-                            Materias
-                        </a>
+                    <div class="col-md-4 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-user-md fa-2x text-success mb-2"></i>
+                            <h6>Enfermería</h6>
+                            <p class="mb-1">(55) 1234-5679</p>
+                            <small class="text-muted">Emergencias 24/7</small>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-6 mb-3">
-                        <a href="{{ url_for('tutoria') }}" class="btn btn-outline-warning btn-lg p-3">
-                            <i class="fas fa-chalkboard-teacher fa-2x mb-2"></i><br>
-                            Tutoría
-                        </a>
+                    <div class="col-md-4 text-center">
+                        <div class="p-3">
+                            <i class="fas fa-shield-alt fa-2x text-warning mb-2"></i>
+                            <h6>Seguridad</h6>
+                            <p class="mb-1">(55) 1234-5680</p>
+                            <small class="text-muted">Ext. 100 desde internos</small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-//Index.html
+<script>
+// Script específico para perfil.html
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación para las tarjetas de estadísticas
+    const statsCards = document.querySelectorAll('.stats-card');
+    statsCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+    
+    // Tooltip para las calificaciones
+    const progressBars = document.querySelectorAll('.progress-bar');
+    progressBars.forEach(bar => {
+        bar.setAttribute('data-bs-toggle', 'tooltip');
+        bar.setAttribute('title', `${bar.style.width} de calificación`);
+    });
+    
+    // Inicializar tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+});
+</script>
+
+<style>
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #3498db;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.stats-card {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    border-color: #3498db;
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.2);
+}
+
+.stats-number {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #3498db;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.progress {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
+}
+
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    padding: 15px 0;
+}
+
+.list-group-item:first-child {
+    border-top: none;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .user-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .stats-number {
+        font-size: 2.2rem;
+    }
+}
+</style>
+{% endblock %}
