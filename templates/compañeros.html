@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-users me-2"></i>Mis Compañeros</h4>
+            </div>
+            <div class="card-body">
+                <!-- Filtros -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="buscarCompañero" 
+                               placeholder="Buscar por nombre...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroGrupo">
+                            <option value="">Todos los grupos</option>
+                            <option value="A">Grupo A</option>
+                            <option value="B">Grupo B</option>
+                            <option value="C">Grupo C</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroTurno">
+                            <option value="">Todos los turnos</option>
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Lista de compañeros -->
+                <div class="row" id="listaCompañeros">
+                    {% for compañero in compañeros %}
+                    <div class="col-md-4 mb-4 compañero-card" 
+                         data-grupo="{{ compañero.grupo }}" 
+                         data-turno="{{ compañero.turno }}"
+                         data-nombre="{{ compañero.nombre.lower() }}">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <div class="avatar-placeholder mb-3">
+                                    <i class="fas fa-user-circle fa-4x text-primary"></i>
+                                </div>
+                                <h5 class="card-title">{{ compañero.nombre }}</h5>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <i class="fas fa-graduation-cap me-1"></i>
+                                        {{ compañero.especialidad }}<br>
+                                        <i class="fas fa-layer-group me-1"></i>
+                                        {{ compañero.semestre }}° Semestre<br>
+                                        <i class="fas fa-users me-1"></i>
+                                        Grupo {{ compañero.grupo }}<br>
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ compañero.turno }}
+                                    </small>
+                                </p>
+                                
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-outline-primary btn-sm"
+                                            onclick="verPerfil('{{ compañero._id }}')">
+                                        <i class="fas fa-eye me-1"></i>Ver Perfil
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm"
+                                            onclick="enviarMensaje('{{ compañero._id }}', '{{ compañero.nombre }}')">
+                                        <i class="fas fa-envelope me-1"></i>Mensaje
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if compañeros|length == 0 %}
+                <div class="text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5>No hay compañeros registrados</h5>
+                    <p class="text-muted">Comparte este enlace con tus compañeros para que se registren.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver perfil de compañero -->
+<div class="modal fade" id="perfilCompañeroModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="perfilCompañeroTitle">Perfil de Compañero</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="perfilCompañeroBody">
+                <!-- Cargado dinámicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para enviar mensaje -->
+<div class="modal fade" id="mensajeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enviar Mensaje</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formMensaje">
+                    <div class="mb-3">
+                        <label class="form-label">Para:</label>
+                        <input type="text" class="form-control" id="destinatarioMensaje" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Asunto:</label>
+                        <input type="text" class="form-control" id="asuntoMensaje" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mensaje:</label>
+                        <textarea class="form-control" id="textoMensaje" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="enviarMensajeSubmit()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Filtrado de compañeros
+document.getElementById('buscarCompañero').addEventListener('input', filtrarCompañeros);
+document.getElementById('filtroGrupo').addEventListener('change', filtrarCompañeros);
+document.getElementById('filtroTurno').addEventListener('change', filtrarCompañeros);
+
+function filtrarCompañeros() {
+    const busqueda = document.getElementById('buscarCompañero').value.toLowerCase();
+    const filtroGrupo = document.getElementById('filtroGrupo').value;
+    const filtroTurno = document.getElementById('filtroTurno').value;
+    
+    document.querySelectorAll('.compañero-card').forEach(card => {
+        const nombre = card.dataset.nombre;
+        const grupo = card.dataset.grupo;
+        const turno = card.dataset.turno;
+        
+        const coincideNombre = nombre.includes(busqueda);
+        const coincideGrupo = !filtroGrupo || grupo === filtroGrupo;
+        const coincideTurno = !filtroTurno || turno === filtroTurno;
+        
+        card.style.display = (coincideNombre && coincideGrupo && coincideTurno) ? 'block' : 'none';
+    });
+}
+
+let compañeroSeleccionadoId = null;
+let compañeroSeleccionadoNombre = null;
+
+function verPerfil(compañeroId) {
+    fetch(`/api/compañero/${compañeroId}`)
+        .then(response => response.json())
+        .then(compañero => {
+            document.getElementById('perfilCompañeroTitle').textContent = `Perfil de ${compañero.nombre}`;
+            document.getElementById('perfilCompañeroBody').innerHTML = `
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="avatar-placeholder mb-3">
+                            <i class="fas fa-user-circle fa-5x text-primary"></i>
+                        </div>
+                        <h4>${compañero.nombre}</h4>
+                        <p class="text-muted">${compañero.especialidad}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><i class="fas fa-info-circle me-2"></i>Información</h6>
+                                        <p><strong>Semestre:</strong> ${compañero.semestre}°</p>
+                                        <p><strong>Grupo:</strong> ${compañero.grupo}</p>
+                                        <p><strong>Turno:</strong> ${compañero.turno}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><i class="fas fa-chart-bar me-2"></i>Estadísticas</h6>
+                                        <p><strong>Materias:</strong> 4</p>
+                                        <p><strong>Asistencia:</strong> 92%</p>
+                                        <p><strong>Promedio:</strong> 8.7</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        ${compañero.email ? `
+                        <div class="alert alert-info">
+                            <i class="fas fa-envelope me-2"></i>
+                            <strong>Contacto:</strong> ${compañero.email}
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            new bootstrap.Modal(document.getElementById('perfilCompañeroModal')).show();
+        });
+}
+
+function enviarMensaje(compañeroId, nombre) {
+    compañeroSeleccionadoId = compañeroId;
+    compañeroSeleccionadoNombre = nombre;
+    
+    document.getElementById('destinatarioMensaje').value = nombre;
+    document.getElementById('asuntoMensaje').value = '';
+    document.getElementById('textoMensaje').value = '';
+    
+    new bootstrap.Modal(document.getElementById('mensajeModal')).show();
+}
+
+function enviarMensajeSubmit() {
+    const asunto = document.getElementById('asuntoMensaje').value;
+    const mensaje = document.getElementById('textoMensaje').value;
+    
+    // Guardar mensaje en localStorage
+    const mensajes = JSON.parse(localStorage.getItem('mensajesEnviados')) || [];
+    mensajes.push({
+        id: Date.now(),
+        destinatarioId: compañeroSeleccionadoId,
+        destinatarioNombre: compañeroSeleccionadoNombre,
+        asunto: asunto,
+        mensaje: mensaje,
+        fecha: new Date().toISOString(),
+        leido: false
+    });
+    
+    localStorage.setItem('mensajesEnviados', JSON.stringify(mensajes));
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('mensajeModal'));
+    modal.hide();
+    
+    mostrarNotificacion('Mensaje enviado correctamente', 'success');
+}
+</script>
+
+<style>
+.compañero-card .card {
+    transition: transform 0.2s;
+}
+
+.compañero-card .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.avatar-placeholder {
+    color: #6c757d;
+}
+
+#listaCompañeros {
+    min-height: 300px;
+}
+</style>
+{% endblock %}

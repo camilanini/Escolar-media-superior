@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
     <!-- Horarios de Tutoría -->
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header">
                 <h4 class="mb-0"><i class="fas fa-clock me-2"></i>Horarios de Tutoría</h4>
@@ -27,13 +27,55 @@
                     <p class="mb-1"><strong>Prof. María González</strong></p>
                     <p class="mb-1 text-muted">Ingles III</p>
                     <p class="mb-0 text-muted">Email: maria.gonzalez@escuela.edu</p>
+                    <button class="btn btn-outline-primary btn-sm mt-2 w-100" 
+                            onclick="enviarMensajeTutor()">
+                        <i class="fas fa-envelope me-1"></i>Contactar Tutor
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Historial de Tutorías -->
-    <div class="col-md-6">
+    <!-- Tareas de Tutoría -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-tasks me-2"></i>Tareas de Tutoría</h4>
+                <button class="btn btn-primary btn-sm" onclick="nuevaTareaTutoria()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="tareasTutoriaContainer">
+                    <!-- Tareas se cargarán dinámicamente -->
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-tasks fa-2x mb-2"></i>
+                        <p>No hay tareas asignadas</p>
+                        <button class="btn btn-outline-primary btn-sm" onclick="nuevaTareaTutoria()">
+                            Crear primera tarea
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notas Rápidas -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-sticky-note me-2"></i>Notas Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <textarea class="form-control" id="notasTutoria" rows="4" 
+                          placeholder="Escribe tus notas aquí..."></textarea>
+                <button class="btn btn-primary btn-sm mt-2 w-100" onclick="guardarNotas()">
+                    <i class="fas fa-save me-1"></i>Guardar Notas
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Historial y Próximas -->
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header">
                 <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historial de Tutorías</h4>
@@ -54,13 +96,18 @@
                 {% endfor %}
                 
                 <!-- Próxima Tutoría -->
-                <div class="card border-primary">
+                <div class="card border-primary mt-3">
                     <div class="card-body">
                         <h6 class="text-primary">Próxima Sesión</h6>
-                        <p class="mb-1"><strong>Viernes 20 de Octubre</strong></p>
+                        <p class="mb-1"><strong>Viernes 20 de Octubre 2025</strong></p>
                         <p class="mb-1">1:00 PM - Sala de Tutores</p>
-                        <p class="mb-0 text-muted">Tema: Avance de proyectos semestrales</p>
-                        <button class="btn btn-primary btn-sm mt-2" onclick="confirmarAsistencia()">Confirmar Asistencia</button>
+                        <p class="mb-2 text-muted">Tema: Avance de proyectos semestrales</p>
+                        <button class="btn btn-primary btn-sm" onclick="confirmarAsistencia()">
+                            Confirmar Asistencia
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm mt-1" onclick="agregarRecordatorio()">
+                            <i class="fas fa-bell me-1"></i>Recordatorio
+                        </button>
                     </div>
                 </div>
             </div>
@@ -68,41 +115,301 @@
     </div>
 </div>
 
-<!-- Material de Tutoría -->
 <div class="row mt-4">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0"><i class="fas fa-folder me-2"></i>Material de Tutoría</h4>
+                <button class="btn btn-primary btn-sm" onclick="subirMaterial()">
+                    <i class="fas fa-upload me-1"></i>Subir Material
+                </button>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-file-pdf fa-2x text-danger mb-2"></i>
-                                <h6>Guía de Proyecto</h6>
-                                <small class="text-muted">PDF - 2.3 MB</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <i class="fas fa-file-word fa-2x text-primary mb-2"></i>
-                                <h6>Formato de Reporte</h6>
-                                <small class="text-muted">DOCX - 1.1 MB</small>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Más materiales -->
+                <div class="row" id="materialContainer">
+                    <!-- Material se cargará dinámicamente -->
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Nueva Tarea -->
+<div class="modal fade" id="nuevaTareaModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nueva Tarea de Tutoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevaTarea">
+                    <div class="mb-3">
+                        <label class="form-label">Título *</label>
+                        <input type="text" class="form-control" id="tituloTarea" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionTarea" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha límite</label>
+                        <input type="date" class="form-control" id="fechaLimiteTarea" 
+                               min="2025-10-01" max="2026-01-31">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Prioridad</label>
+                        <select class="form-select" id="prioridadTarea">
+                            <option value="baja">Baja</option>
+                            <option value="media" selected>Media</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarTarea()">Guardar Tarea</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+let tareasTutoria = JSON.parse(localStorage.getItem('tareasTutoria')) || [];
+let notasTutoria = localStorage.getItem('notasTutoria') || '';
+let materialTutoria = JSON.parse(localStorage.getItem('materialTutoria')) || [
+    { nombre: 'Guía de Proyecto Final', tipo: 'pdf', tamaño: '2.3 MB', fecha: '2025-10-01' },
+    { nombre: 'Formato de Reporte Semestral', tipo: 'docx', tamaño: '1.1 MB', fecha: '2025-10-05' },
+    { nombre: 'Presentación Tutoría Octubre', tipo: 'ppt', tamaño: '4.7 MB', fecha: '2025-10-10' },
+    { nombre: 'Calendario Actividades', tipo: 'xlsx', tamaño: '0.8 MB', fecha: '2025-10-15' }
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    cargarTareasTutoria();
+    document.getElementById('notasTutoria').value = notasTutoria;
+    cargarMaterial();
+});
+
+function cargarTareasTutoria() {
+    const container = document.getElementById('tareasTutoriaContainer');
+    
+    if (tareasTutoria.length === 0) {
+        container.innerHTML = `
+            <div class="text-center text-muted py-4">
+                <i class="fas fa-tasks fa-2x mb-2"></i>
+                <p>No hay tareas asignadas</p>
+                <button class="btn btn-outline-primary btn-sm" onclick="nuevaTareaTutoria()">
+                    Crear primera tarea
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = tareasTutoria.map((tarea, index) => `
+        <div class="card mb-2">
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" class="form-check-input me-2" 
+                                   ${tarea.completada ? 'checked' : ''}
+                                   onchange="toggleTarea(${index})">
+                            <h6 class="mb-0 ${tarea.completada ? 'text-muted text-decoration-line-through' : ''}">
+                                ${tarea.titulo}
+                            </h6>
+                        </div>
+                        ${tarea.descripcion ? `<small class="text-muted d-block mt-1">${tarea.descripcion}</small>` : ''}
+                        ${tarea.fechaLimite ? `<small class="text-muted"><i class="fas fa-calendar me-1"></i>${tarea.fechaLimite}</small>` : ''}
+                        <span class="badge ${getBadgePrioridad(tarea.prioridad)} mt-1">
+                            ${tarea.prioridad}
+                        </span>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="eliminarTareaTutoria(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getBadgePrioridad(prioridad) {
+    switch(prioridad) {
+        case 'alta': return 'bg-danger';
+        case 'media': return 'bg-warning';
+        case 'baja': return 'bg-info';
+        default: return 'bg-secondary';
+    }
+}
+
+function nuevaTareaTutoria() {
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('fechaLimiteTarea').value = hoy;
+    new bootstrap.Modal(document.getElementById('nuevaTareaModal')).show();
+}
+
+function guardarTarea() {
+    const titulo = document.getElementById('tituloTarea').value;
+    const descripcion = document.getElementById('descripcionTarea').value;
+    const fechaLimite = document.getElementById('fechaLimiteTarea').value;
+    const prioridad = document.getElementById('prioridadTarea').value;
+    
+    if (!titulo) {
+        alert('Por favor ingresa un título');
+        return;
+    }
+    
+    const nuevaTarea = {
+        id: Date.now(),
+        titulo: titulo,
+        descripcion: descripcion,
+        fechaLimite: fechaLimite,
+        prioridad: prioridad,
+        completada: false,
+        fechaCreacion: new Date().toISOString()
+    };
+    
+    tareasTutoria.push(nuevaTarea);
+    localStorage.setItem('tareasTutoria', JSON.stringify(tareasTutoria));
+    
+    const modal = bootstrap.Modal.getInstance(document.getElementById('nuevaTareaModal'));
+    modal.hide();
+    document.getElementById('formNuevaTarea').reset();
+    
+    cargarTareasTutoria();
+    mostrarNotificacion('Tarea guardada correctamente', 'success');
+}
+
+function toggleTarea(index) {
+    tareasTutoria[index].completada = !tareasTutoria[index].completada;
+    localStorage.setItem('tareasTutoria', JSON.stringify(tareasTutoria));
+    cargarTareasTutoria();
+    
+    const estado = tareasTutoria[index].completada ? 'completada' : 'pendiente';
+    mostrarNotificacion(`Tarea marcada como ${estado}`, 'info');
+}
+
+function eliminarTareaTutoria(index) {
+    if (confirm('¿Estás seguro de eliminar esta tarea?')) {
+        const tareaEliminada = tareasTutoria.splice(index, 1)[0];
+        localStorage.setItem('tareasTutoria', JSON.stringify(tareasTutoria));
+        cargarTareasTutoria();
+        mostrarNotificacion(`Tarea "${tareaEliminada.titulo}" eliminada`, 'success');
+    }
+}
+
+function guardarNotas() {
+    const notas = document.getElementById('notasTutoria').value;
+    localStorage.setItem('notasTutoria', notas);
+    mostrarNotificacion('Notas guardadas correctamente', 'success');
+}
+
+function cargarMaterial() {
+    const container = document.getElementById('materialContainer');
+    
+    if (materialTutoria.length === 0) {
+        container.innerHTML = `
+            <div class="col-12 text-center text-muted py-4">
+                <i class="fas fa-folder-open fa-3x mb-3"></i>
+                <p>No hay material disponible</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = materialTutoria.map((item, index) => `
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="${getIconoTipo(item.tipo)} fa-2x ${getColorTipo(item.tipo)} mb-2"></i>
+                    <h6 class="card-title">${item.nombre}</h6>
+                    <small class="text-muted">
+                        ${item.tipo.toUpperCase()} - ${item.tamaño}<br>
+                        ${item.fecha}
+                    </small>
+                    <div class="mt-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="descargarMaterial(${index})" title="Descargar">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="eliminarMaterial(${index})" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getIconoTipo(tipo) {
+    switch(tipo) {
+        case 'pdf': return 'fas fa-file-pdf';
+        case 'docx': return 'fas fa-file-word';
+        case 'ppt': return 'fas fa-file-powerpoint';
+        case 'xlsx': return 'fas fa-file-excel';
+        case 'jpg': case 'png': case 'gif': return 'fas fa-file-image';
+        default: return 'fas fa-file';
+    }
+}
+
+function getColorTipo(tipo) {
+    switch(tipo) {
+        case 'pdf': return 'text-danger';
+        case 'docx': return 'text-primary';
+        case 'ppt': return 'text-warning';
+        case 'xlsx': return 'text-success';
+        case 'jpg': case 'png': case 'gif': return 'text-info';
+        default: return 'text-secondary';
+    }
+}
+
+function descargarMaterial(index) {
+    const item = materialTutoria[index];
+    mostrarNotificacion(`Descargando: ${item.nombre}`, 'info');
+    // En una aplicación real, aquí iría la lógica para descargar el archivo
+}
+
+function eliminarMaterial(index) {
+    if (confirm(`¿Eliminar "${materialTutoria[index].nombre}"?`)) {
+        const materialEliminado = materialTutoria.splice(index, 1)[0];
+        localStorage.setItem('materialTutoria', JSON.stringify(materialTutoria));
+        cargarMaterial();
+        mostrarNotificacion(`"${materialEliminado.nombre}" eliminado`, 'success');
+    }
+}
+
+function subirMaterial() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.docx,.ppt,.xlsx,.txt,.jpg,.png,.gif';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const nuevoMaterial = {
+                nombre: file.name,
+                tipo: file.name.split('.').pop().toLowerCase(),
+                tamaño: formatBytes(file.size),
+                fecha: new Date().toISOString().split('T')[0]
+            };
+            
+            materialTutoria.push(nuevoMaterial);
+            localStorage.setItem('materialTutoria', JSON.stringify(materialTutoria));
+            cargarMaterial();
+            mostrarNotificacion('Material subido correctamente', 'success');
+        }
+    };
+    input.click();
+}
+
+function formatBytes(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
 function confirmarAsistencia() {
     const boton = event.target;
     boton.textContent = '✓ Asistencia Confirmada';
@@ -110,8 +417,102 @@ function confirmarAsistencia() {
     boton.classList.add('btn-success');
     boton.disabled = true;
     
-    // Mostrar mensaje de confirmación
-    alert('¡Asistencia confirmada para la tutoría del Viernes 20 de Octubre!');
+    const asistencias = JSON.parse(localStorage.getItem('asistenciasTutoria')) || [];
+    asistencias.push({
+        fecha: new Date().toISOString(),
+        sesion: 'Próxima sesión - 20 Octubre 2025'
+    });
+    localStorage.setItem('asistenciasTutoria', JSON.stringify(asistencias));
+    
+    mostrarNotificacion('¡Asistencia confirmada para la tutoría del Viernes 20 de Octubre 2025!', 'success');
+}
+
+function agregarRecordatorio() {
+    const evento = {
+        id: Date.now().toString(),
+        titulo: 'Tutoría - Avance de proyectos',
+        fecha: '2025-10-20',
+        hora: '13:00',
+        descripcion: 'Sesión de tutoría: Avance de proyectos semestrales',
+        tipo: 'tutoria',
+        prioridad: 'alta'
+    };
+    
+    // Guardar en localStorage de agenda
+    const eventosAgenda = JSON.parse(localStorage.getItem('eventosAgenda')) || [];
+    eventosAgenda.push(evento);
+    localStorage.setItem('eventosAgenda', JSON.stringify(eventosAgenda));
+    
+    mostrarNotificacion('Recordatorio agregado a la agenda', 'success');
+}
+
+function enviarMensajeTutor() {
+    mostrarNotificacion('Redirigiendo a sistema de mensajería...', 'info');
+    // En una app real, esto abriría un formulario de contacto
+    setTimeout(() => {
+        alert('En una aplicación real, esto abriría un formulario para contactar al tutor.');
+    }, 1000);
+}
+
+function mostrarNotificacion(mensaje, tipo = 'success') {
+    const alerta = document.createElement('div');
+    alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
+    alerta.style.cssText = `
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        max-width: 400px;
+    `;
+    alerta.innerHTML = `
+        ${mensaje}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alerta);
+    
+    setTimeout(() => {
+        if (alerta.parentNode) {
+            const bsAlert = new bootstrap.Alert(alerta);
+            bsAlert.close();
+        }
+    }, 5000);
 }
 </script>
+
+<style>
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.btn-outline-primary:hover {
+    transform: translateY(-1px);
+}
+
+#tareasTutoriaContainer {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#notasTutoria {
+    resize: vertical;
+}
+
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-bottom: 20px;
+    }
+}
+</style>
 {% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base_auth.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header text-center bg-success text-white">
+                <h4><i class="fas fa-user-plus me-2"></i>Registro de Estudiante</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('auth.registro') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre Completo *</label>
+                            <input type="text" class="form-control" name="nombre" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Correo Electrónico *</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Contraseña *</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Confirmar Contraseña *</label>
+                            <input type="password" class="form-control" name="confirm_password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Especialidad</label>
+                            <select class="form-select" name="especialidad">
+                                <option value="Programación">Programación</option>
+                                <option value="Administración">Administración</option>
+                                <option value="Contabilidad">Contabilidad</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Semestre</label>
+                            <select class="form-select" name="semestre">
+                                {% for i in range(1, 7) %}
+                                <option value="{{ i }}">{{ i }}° Semestre</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Turno</label>
+                            <select class="form-select" name="turno">
+                                <option value="Matutino">Matutino</option>
+                                <option value="Vespertino">Vespertino</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-user-plus me-2"></i>Registrarse
+                        </button>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary">
+                            ¿Ya tienes cuenta? Inicia Sesión
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
